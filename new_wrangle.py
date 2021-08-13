@@ -70,13 +70,19 @@ def new_features():
     df['deflated_series']=df['deflated_series'].apply(lambda x: np.round(x, decimals=2))
 
     #change in sales by week
-    df['sales_delta'] = df.groupby('store_id').weekly_sales.diff(periods=1)
+    df['sales_delta_weekly'] = df.groupby('store_id').weekly_sales.diff(periods=1)
+    #change in sales by year
+    df['sales_delta_yearly'] = df.groupby('store_id').weekly_sales.diff(periods=52)
     #change in gas prices by week
-    df['gas_delta'] = df.groupby('store_id').fuel_price.diff(periods=1)
+    df['gas_delta_weekly'] = df.groupby('store_id').fuel_price.diff(periods=1)
+    #change in gas prices by year
+    df['gas_delta_yearly'] = df.groupby('store_id').fuel_price.diff(periods=52)
 
     #fill delta nulls with 0
-    df['sales_delta'] = df['sales_delta'].fillna(0)
-    df['gas_delta'] = df['gas_delta'].fillna(0)
+    df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
+    df['gas_delta_weekly'] = df['gas_delta_weekly'].fillna(0)
+    df['sales_delta_yearly'] = df['sales_delta_yearly'].fillna(0)
+    df['gas_delta_yearly'] = df['gas_delta_yearly'].fillna(0)
 
     #set date as index and sort
     df = df.set_index('Date').sort_index()
