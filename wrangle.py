@@ -43,6 +43,8 @@ def wrangle_walmart():
     joined_df['year'] = joined_df.index.year
     #create column for deflating nominal data
     joined_df['deflated_series'] = joined_df.weekly_sales / joined_df.CPI
+    #create quarter column
+    joined_df['quarter']= joined_df.index.quarter
 
     #create season column
     joined_df.loc[joined_df['month'] == 'January','season'] ='Winter'
