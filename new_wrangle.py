@@ -113,7 +113,7 @@ def season_column():
 ########################### Address Outliers Function ###########################
 
 
-def address_outliers():
+def address_outliers(df):
     '''
     This function addresses outliers with store type
     and it change the store type to be corrected
@@ -149,7 +149,7 @@ def wrangle_walmart():
     df = add_which_holiday(df)
 
     #address outliers
-    df = address_outliers()
+    df = address_outliers(df)
 
     return df
 
