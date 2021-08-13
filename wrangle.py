@@ -65,6 +65,12 @@ def wrangle_walmart():
     joined_df['fuel_price']=joined_df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
     joined_df['CPI']=joined_df['CPI'].apply(lambda x: np.round(x, decimals=3))
 
+    #turn year column into datetime
+    joined_df['year'] = joined_df['year'].apply(pd.to_datetime)
+
+    #change in sales by week
+    df['sales_delta'] = df.groupby('store_id').weekly_sales.diff(periods=1)
+
     return joined_df
 
 
