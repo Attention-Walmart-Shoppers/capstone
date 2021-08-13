@@ -1,6 +1,8 @@
 import pandas as pd 
 import numpy as np
 
+import datetime as dt 
+
 ##################### ACQUIRE WALMART DATA #####################
 
 def acquire_data():
@@ -142,6 +144,9 @@ def wrangle_walmart():
 
     # season column
     df = season_column()
+    
+    # holiday column
+    df = add_which_holiday(df)
 
     #address outliers
     df = address_outliers()
@@ -171,3 +176,47 @@ def train_test(df, target):
     print(f'X_test -> {X_test.shape}')
 
     return X_train, y_train, X_test, y_test
+
+############################ WHICH HOLIDAY FUNCTION ##############################
+
+def add_which_holiday(df):
+    '''
+    This function takes in the walmart dataframe
+    Has list of different dates for holidays in the function
+    Adds a column called 'holiday_name' with the name of the holiday if that week corresponds
+    with the date
+    any that don't have a holiday get filled with the value no_holiday
+    
+    '''
+    # create lists of holidays 
+    christmases = ['2010-12-31', '2011-12-30', '2012-12-28']
+
+    super_bowls = ['2010-02-12', '2011-02-11', '2012-02-10']
+
+    labor_days = ['2010-09-10', '2011-09-09', '2012-09-07']
+
+    thanksgivings = ['2010-11-26', '2011-11-25', '2012-11-23']
+    
+    # turn christmas list into datetimes 
+    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in christmases]
+    # add column called holiday_name christmas where dates match list
+    df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'christmas'
+    
+    # turn super bowl list into date times
+    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in super_bowls]  
+    #add super bowl where dates match list
+    df.loc[df.index.isin(dates_list) == True,'holiday_name'] = 'super_bowl'
+    
+    # labor day list into date times
+    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in labor_days] 
+    # add super bowl where dates match list
+    df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'labor_day'
+    
+    # thanksgiving list into date times
+    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in thanksgivings] 
+    # add super bowl where dates match list
+    df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'thanksgiving'
+    
+    df = df.fillna('no_holiday')
+    
+    return df
