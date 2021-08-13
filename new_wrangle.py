@@ -59,10 +59,10 @@ def new_features():
     df['year'] = pd.DatetimeIndex(df['Date']).year
     #create column to identify month!
     df['quarter'] = pd.DatetimeIndex(df['Date']).quarter
-    #create column for day of week
+    #day of week
     df['weekday'] = pd.DatetimeIndex(df['Date']).day_name()
     #create column for week of the year
-    df['week_of_week'] = pd.DatetimeIndex(df['Date']).week
+    df['week_of_year'] = pd.DatetimeIndex(df['Date']).week
 
     #create column for deflating nominal data
     df['deflated_series'] = df.weekly_sales / df.CPI
