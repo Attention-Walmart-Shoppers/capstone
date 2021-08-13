@@ -35,7 +35,7 @@ def wrangle_walmart():
     joined_df = joined_df.set_index('Date').sort_index()
 
     #change column names
-    joined_df = joined_df.rename(columns={"Store": "store", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "type", "Size": "store_size"})
+    joined_df = joined_df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "type", "Size": "store_size"})
 
     #create column to identify month
     joined_df['month'] = joined_df.index.month_name()
