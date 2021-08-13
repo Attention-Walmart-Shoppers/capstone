@@ -29,7 +29,7 @@ def change_columns():
     df.Date = df.Date.astype('datetime64[ns]')
 
     #change column names
-    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "type", "Size": "store_size"})
+    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size"})
 
     #change dtype for temp
     df.temperature = df.temperature.astype(int)
@@ -65,6 +65,8 @@ def new_features():
 
     #change in sales by week
     df['sales_delta'] = df.groupby('store_id').weekly_sales.diff(periods=1)
+    #change in gas prices by week
+    df['gas_delta'] = df.groupby('store_id').fuel_price.diff(periods=1)
 
     #set date as index and sort
     df = df.set_index('Date').sort_index()
@@ -121,6 +123,26 @@ def wrangle_walmart():
 
     return df
 
+############################ SPLIT FUNCTION ##############################
 
+def train_test(df, target):
+    '''
+    This function brings in the dataframe and the target feature
+    then returns X_train, y_train, X_test and y_test with their respective shapes
+    '''
+    train = df[:'05-2012'] # includes everything until june 2016
+    test = df['06-2012':"2012"] #includes last 6 months
 
-  
+    # split train into X (dataframe, drop target) & y (series, keep target only)
+    X_train = train.drop(columns=[target])
+    y_train = train[target]
+
+    # split test into X (dataframe, drop target) & y (series, keep target only)
+    X_test = test.drop(columns=[target])
+    y_test = test[target]
+
+    # Have function print datasets shape
+    print(f'X_train -> {X_train.shape}')
+    print(f'X_test -> {X_test.shape}')
+
+    return X_train, y_train, X_test, y_test
