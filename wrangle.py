@@ -69,7 +69,7 @@ def wrangle_walmart():
     joined_df['year'] = joined_df['year'].apply(pd.to_datetime)
 
     #change in sales by week
-    df['sales_delta'] = df.groupby('store_id').weekly_sales.diff(periods=1)
+    joined_df['sales_delta'] = joined_df.groupby('store_id').weekly_sales.diff(periods=1)
 
     return joined_df
 
