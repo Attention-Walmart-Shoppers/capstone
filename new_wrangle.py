@@ -26,10 +26,10 @@ def change_columns():
     df= acquire_data()
 
     #change dtype for Date 
-    df.Date = df.Date.astype('datetime64[ns]')
+    df.Date = pd.to_datetime(df.Date, dayfirst=True)
 
     #change column names
-    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "type", "Size": "store_size"})
+    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size"})
 
     #change dtype for temp
     df.temperature = df.temperature.astype(int)
@@ -57,6 +57,10 @@ def new_features():
     df['year'] = pd.DatetimeIndex(df['Date']).year
     #create column to identify month!
     df['quarter'] = pd.DatetimeIndex(df['Date']).quarter
+    #create column for day of week
+    df['weekday'] = pd.DatetimeIndex(df['Date']).day_name()
+    #create column for week of the year
+    df['week_of_week'] = pd.DatetimeIndex(df['Date']).week
 
     #create column for deflating nominal data
     df['deflated_series'] = df.weekly_sales / df.CPI
@@ -65,6 +69,12 @@ def new_features():
 
     #change in sales by week
     df['sales_delta'] = df.groupby('store_id').weekly_sales.diff(periods=1)
+    #change in gas prices by week
+    df['gas_delta'] = df.groupby('store_id').fuel_price.diff(periods=1)
+
+    #fill delta nulls with 0
+    df['sales_delta'] = df['sales_delta'].fillna(0)
+    df['gas_delta'] = df['gas_delta'].fillna(0)
 
     #set date as index and sort
     df = df.set_index('Date').sort_index()
@@ -121,6 +131,26 @@ def wrangle_walmart():
 
     return df
 
+############################ SPLIT FUNCTION ##############################
 
+def train_test(df, target):
+    '''
+    This function brings in the dataframe and the target feature
+    then returns X_train, y_train, X_test and y_test with their respective shapes
+    '''
+    train = df[:'05-2012'] # includes everything until june 2016
+    test = df['06-2012':"2012"] #includes last 6 months
 
-  
+    # split train into X (dataframe, drop target) & y (series, keep target only)
+    X_train = train.drop(columns=[target])
+    y_train = train[target]
+
+    # split test into X (dataframe, drop target) & y (series, keep target only)
+    X_test = test.drop(columns=[target])
+    y_test = test[target]
+
+    # Have function print datasets shape
+    print(f'X_train -> {X_train.shape}')
+    print(f'X_test -> {X_test.shape}')
+
+    return X_train, y_train, X_test, y_test
