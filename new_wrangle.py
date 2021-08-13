@@ -26,7 +26,7 @@ def change_columns():
     df= acquire_data()
 
     #change dtype for Date 
-    df.Date = df.Date.astype('datetime64[ns]')
+    df.Date = pd.to_datetime(df.Date, dayfirst=True)
 
     #change column names
     df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size"})
