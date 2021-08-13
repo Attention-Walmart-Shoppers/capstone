@@ -35,7 +35,7 @@ def wrangle_walmart():
     joined_df = joined_df.set_index('Date').sort_index()
 
     #change column names
-    joined_df = joined_df.rename(columns={"Store": "store", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "type", "Size": "store_size"})
+    joined_df = joined_df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "type", "Size": "store_size"})
 
     #create column to identify month
     joined_df['month'] = joined_df.index.month_name()
@@ -43,6 +43,8 @@ def wrangle_walmart():
     joined_df['year'] = joined_df.index.year
     #create column for deflating nominal data
     joined_df['deflated_series'] = joined_df.weekly_sales / joined_df.CPI
+    #create quarter column
+    joined_df['quarter']= joined_df.index.quarter
 
     #create season column
     joined_df.loc[joined_df['month'] == 'January','season'] ='Winter'
@@ -62,6 +64,12 @@ def wrangle_walmart():
     joined_df['deflated_series']=joined_df['deflated_series'].apply(lambda x: np.round(x, decimals=2))
     joined_df['fuel_price']=joined_df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
     joined_df['CPI']=joined_df['CPI'].apply(lambda x: np.round(x, decimals=3))
+
+    #turn year column into datetime
+    joined_df['year'] = joined_df['year'].apply(pd.to_datetime)
+
+    #change in sales by week
+    joined_df['sales_delta'] = joined_df.groupby('store_id').weekly_sales.diff(periods=1)
 
     return joined_df
 
