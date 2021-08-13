@@ -108,6 +108,20 @@ def season_column():
 
     return df
 
+########################### Address Outliers Function ###########################
+
+
+def address_outliers():
+    '''
+    This function addresses outliers with store type
+    and it change the store type to be corrected
+    '''
+    df[df['store_id'] ==3] = df.loc[df['store_id'] == 3].replace({'B':'C'})
+    df[df['store_id'] ==5] = df.loc[df['store_id'] == 5].replace({'B':'C'})
+    df[df['store_id'] ==33] = df.loc[df['store_id'] == 33].replace({'A':'C'})
+    df[df['store_id'] ==36] = df.loc[df['store_id'] == 36].replace({'A':'C'})
+
+    return df
 
 ############################ Wrangle Walmart Function ##############################
 
@@ -128,6 +142,9 @@ def wrangle_walmart():
 
     # season column
     df = season_column()
+
+    #address outliers
+    df = address_outliers()
 
     return df
 
