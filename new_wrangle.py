@@ -57,6 +57,10 @@ def new_features():
     df['year'] = pd.DatetimeIndex(df['Date']).year
     #create column to identify month!
     df['quarter'] = pd.DatetimeIndex(df['Date']).quarter
+    #create column for day of week
+    df['weekday'] = pd.DatetimeIndex(df['Date']).day_name()
+    #create column for week of the year
+    df['week_of_week'] = pd.DatetimeIndex(df['Date']).week
 
     #create column for deflating nominal data
     df['deflated_series'] = df.weekly_sales / df.CPI
@@ -67,6 +71,10 @@ def new_features():
     df['sales_delta'] = df.groupby('store_id').weekly_sales.diff(periods=1)
     #change in gas prices by week
     df['gas_delta'] = df.groupby('store_id').fuel_price.diff(periods=1)
+
+    #fill delta nulls with 0
+    df['sales_delta'] = df['sales_delta'].fillna(0)
+    df['gas_delta'] = df['gas_delta'].fillna(0)
 
     #set date as index and sort
     df = df.set_index('Date').sort_index()
