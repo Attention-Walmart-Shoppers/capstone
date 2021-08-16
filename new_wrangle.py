@@ -1,8 +1,11 @@
 import pandas as pd 
 import numpy as np
 from sklearn.model_selection import train_test_split
-
+import warnings
+warnings.filterwarnings("ignore")
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 import datetime as dt 
+import matplotlib.pyplot as plt
 
 ##################### ACQUIRE WALMART DATA #####################
 
@@ -84,6 +87,21 @@ def new_features(df):
 
     #set date as index and sort
     df = df.set_index('Date').sort_index()
+
+
+    #create a new column pre_christmas
+    df['pre_christmas'] = 0
+    #getting the list for pre_christmas
+    pre_c= ['2010-12-24', '2010-12-17', '2011-12-23', '2011-12-16']
+    #add value 1 for only pre_christmas weeks
+    df.loc[pre_c, 'pre_christmas'] = 1
+
+    #ADD TAX SEASON
+    df['tax_season'] = 0 
+    #getting the list for tax
+    tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
+    #add value 1 for only for the list above
+    df.loc[tax, 'tax_season'] = 1
 
     return df
 
@@ -284,6 +302,22 @@ def scaled_df ( train_df , test_df, columns,  scaler):
         plt.xlabel(col)
         plt.ylabel("counts")
 
-
-
     return train_scaled_df,  test_scaled_df
+
+
+def split_scale (df, target, scaler):
+    '''
+    takes in a df and creates dummy variablesn, select only the n umeric columns and  split into X_train, y_train, 
+    X_test, y_test and scaled X_train, X_test.
+    return   X_train_scaled, y_train_scaled, X_test, y_test
+    '''
+
+    #split
+    train, test, X_train, y_train, X_test, y_test = train_test(df, target)
+
+    #select the columns to scale
+    columns =  X_train.select_dtypes(exclude='object').columns.to_list()
+    #scale 
+    X_train_scaled, X_test_scaled = scaled_df( X_train , X_test, columns , scaler)
+
+    return train, test,  X_train_scaled, X_test_scaled, y_train, y_test
