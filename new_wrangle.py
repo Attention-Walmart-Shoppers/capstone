@@ -180,8 +180,10 @@ def train_test(df, target):
     # Have function print datasets shape
     print(f'X_train -> {X_train.shape}')
     print(f'X_test -> {X_test.shape}')
+    print(f'train -> {train.shape}')
+    print(f'test -> {test.shape}')
 
-    return X_train, y_train, X_test, y_test
+    return train, test, X_train, y_train, X_test, y_test
 
 ############################ WHICH HOLIDAY FUNCTION ##############################
 
