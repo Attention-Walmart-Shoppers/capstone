@@ -39,6 +39,7 @@ def change_columns(df):
     #dtype into string
     df['store_id'] = df['store_id'].astype(str)
 
+
     #round to 2 decimal places
     df['fuel_price']=df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
     df['CPI']=df['CPI'].apply(lambda x: np.round(x, decimals=3))
@@ -77,10 +78,7 @@ def new_features(df):
     df['gas_delta_weekly'] = df.groupby('store_id').fuel_price.diff(periods=1)
     #change in gas prices by year
     df['gas_delta_yearly'] = df.groupby('store_id').fuel_price.diff(periods=52)
-    #last year sales
-    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(52)
-    #last week sales
-    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(1)
+
 
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
@@ -140,85 +138,12 @@ def address_outliers(df):
     This function addresses outliers with store type
     and it change the store type to be corrected
     '''
-    df[df['store_id'] == '3'] = df.loc[df['store_id'] == '3'].replace({'B':'C'})
-    df[df['store_id'] == '5'] = df.loc[df['store_id'] == '5'].replace({'B':'C'})
-    df[df['store_id'] == '33'] = df.loc[df['store_id'] == '33'].replace({'A':'C'})
-    df[df['store_id'] == '36'] = df.loc[df['store_id'] == '36'].replace({'A':'C'})
+    df[df['store_id'] ==3] = df.loc[df['store_id'] == 3].replace({'B':'C'})
+    df[df['store_id'] ==5] = df.loc[df['store_id'] == 5].replace({'B':'C'})
+    df[df['store_id'] ==33] = df.loc[df['store_id'] == 33].replace({'A':'C'})
+    df[df['store_id'] ==36] = df.loc[df['store_id'] == 36].replace({'A':'C'})
 
     return df
-
-
-########################### Create dummy Variables Function ###########################
-
-def create_dummies (df, dumm_col = ['holiday_name']):
-    '''
-    Takes in a df and columns to create dummies.
-    retunr the original df with de new columns (dummies)
-    '''
-    #create dummy variables 
-    for col in dumm_col:
-        #create dummies
-        df_dummies = pd.get_dummies(df[col], dummy_na=False)
-        #  concat df_dummies with my df
-        df = pd.concat([df, df_dummies], axis =1)
-    #drop no_holiday columns and year
-    df = df.drop(columns = ['no_holiday'])
-    return df
-
-############################ Wrangle Walmart Function ##############################
-
-def wrangle_walmart():
-    '''
-    This function will bring in the walmart sales csv and cleans it
-    then returns a cleaned version as a Pandas dataframe.
-    '''
-    
-    # acquire data
-    df = acquire_data()
-    
-    # change columns
-    df = change_columns(df)
-
-    # holiday column
-    df = add_which_holiday(df)
-    
-    # new columns
-    df = new_features(df)
-
-    # season column
-    df = season_column(df)
-
-    #address outliers
-    df = address_outliers(df)
-
-    #create dummies
-    df = create_dummies (df)
-
-    return df
-
-############################ SPLIT FUNCTION ##############################
-
-def train_test(df, target):
-    '''
-    This function brings in the dataframe and the target feature
-    then returns X_train, y_train, X_test and y_test with their respective shapes
-    '''
-    # split df into test (20%) and train_validate (80%)
-    train, test = train_test_split(df, test_size=0.3, random_state=123)
-
-    # split train into X (dataframe, drop target) & y (series, keep target only)
-    X_train = train.drop(columns=[target])
-    y_train = train[target]
-
-    # split test into X (dataframe, drop target) & y (series, keep target only)
-    X_test = test.drop(columns=[target])
-    y_test = test[target]
-
-    # Have function print datasets shape
-    print(f'train -> {train.shape}')
-    print(f'test -> {test.shape}')
-
-    return train, test, X_train, y_train, X_test, y_test
 
 
 ############################ WHICH HOLIDAY FUNCTION ##############################
@@ -264,6 +189,99 @@ def add_which_holiday(df):
     df = df.fillna('no_holiday')
     
     return df
+
+########################### Create dummy Variables Function ###########################
+
+def create_dummies (df, dumm_col = ['holiday_name']):
+    '''
+    Takes in a df and columns to create dummies.
+    retunr the original df with de new columns (dummies)
+    '''
+    #create dummy variables 
+    for col in dumm_col:
+        #create dummies
+        df_dummies = pd.get_dummies(df[col], dummy_na=False)
+        #  concat df_dummies with my df
+        df = pd.concat([df, df_dummies], axis =1)
+    #drop no_holiday columns and year
+    df = df.drop(columns = ['no_holiday'])
+    return df
+
+############################ get past sales data ############################
+
+def get_past_sales_columns(df):
+    '''
+    This function takes in the dataframe
+    And creates new columns based on historical data.
+    Last year sales and last week sales
+    '''
+    #last year sales
+    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(52)
+    #last week sales
+    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(1)
+    
+    return df
+
+############################ Wrangle Walmart Function ##############################
+
+def wrangle_walmart():
+    '''
+    This function will bring in the walmart sales csv and cleans it
+    then returns a cleaned version as a Pandas dataframe.
+    '''
+    
+    # acquire data
+    df = acquire_data()
+    
+    # change columns
+    df = change_columns(df)
+
+    # new columns
+    df = new_features(df)
+    
+     # season column
+    df = season_column(df)
+    
+    # holiday column
+    df = add_which_holiday(df)
+
+    #address outliers
+    df = address_outliers(df)
+    
+    # get last week and last years sales data
+    df = get_past_sales_columns(df)
+
+    #create dummies
+    df = create_dummies (df)
+
+    return df
+
+############################ SPLIT FUNCTION ##############################
+
+def train_test(df, target):
+    '''
+    This function brings in the dataframe and the target feature
+    then returns X_train, y_train, X_test and y_test with their respective shapes
+    '''
+    # split df into test (20%) and train_validate (80%)
+    train, test = train_test_split(df, test_size=0.3, random_state=123)
+
+    # split train into X (dataframe, drop target) & y (series, keep target only)
+    X_train = train.drop(columns=[target])
+    y_train = train[target]
+
+    # split test into X (dataframe, drop target) & y (series, keep target only)
+    X_test = test.drop(columns=[target])
+    y_test = test[target]
+
+    # Have function print datasets shape
+    print(f'train -> {train.shape}')
+    print(f'test -> {test.shape}')
+
+    return train, test, X_train, y_train, X_test, y_test
+
+
+
 
 ############################ Scale  ##############################
 def scaled_df ( train_df , test_df, columns,  scaler):
