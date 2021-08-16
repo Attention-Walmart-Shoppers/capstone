@@ -74,6 +74,7 @@ def new_features(df):
     df['gas_delta_weekly'] = df.groupby('store_id').fuel_price.diff(periods=1)
     #change in gas prices by year
     df['gas_delta_yearly'] = df.groupby('store_id').fuel_price.diff(periods=52)
+<<<<<<< HEAD
     #sales from last year
     df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(-52)
     #sales for last week
@@ -92,6 +93,8 @@ def new_features(df):
     tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
     #add value 1 for only for the list above
     df.loc[tax, 'tax_season'] = 1
+=======
+>>>>>>> b8429532cf8602328630fc659420a6af671f272f
 
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
