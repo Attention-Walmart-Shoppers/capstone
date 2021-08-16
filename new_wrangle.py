@@ -1,5 +1,6 @@
 import pandas as pd 
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 import datetime as dt 
 
@@ -160,8 +161,11 @@ def train_test(df, target):
     This function brings in the dataframe and the target feature
     then returns X_train, y_train, X_test and y_test with their respective shapes
     '''
-    train = df[:'05-2012'] # includes everything until june 2016
-    test = df['06-2012':"2012"] #includes last 6 months
+    # split df into test (20%) and train_validate (80%)
+    train, test = train_test_split(df, test_size=0.2, random_state=123)
+
+    # split test off into train (70% of 80% = 56%)
+    test = train_test_split(train, test_size=0.3, random_state=123)
 
     # split train into X (dataframe, drop target) & y (series, keep target only)
     X_train = train.drop(columns=[target])
@@ -172,12 +176,11 @@ def train_test(df, target):
     y_test = test[target]
 
     # Have function print datasets shape
-    print(f'X_train -> {X_train.shape}')
-    print(f'X_test -> {X_test.shape}')
     print(f'train -> {train.shape}')
     print(f'test -> {test.shape}')
 
     return train, test, X_train, y_train, X_test, y_test
+
 
 ############################ WHICH HOLIDAY FUNCTION ##############################
 
