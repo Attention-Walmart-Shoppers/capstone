@@ -32,7 +32,10 @@ def change_columns(df):
 
     #change dtype for temp
     df.temperature = df.temperature.astype(int)
-    
+    #dtype into string
+    df['store_id'] = df['store_id'].astype(str)
+
+
     #round to 2 decimal places
     df['fuel_price']=df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
     df['CPI']=df['CPI'].apply(lambda x: np.round(x, decimals=3))
@@ -76,7 +79,6 @@ def new_features(df):
     #sales for last week
     df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(-1)
 
-
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
     df['gas_delta_weekly'] = df['gas_delta_weekly'].fillna(0)
@@ -85,9 +87,6 @@ def new_features(df):
 
     #set date as index and sort
     df = df.set_index('Date').sort_index()
-
-    #dtype into string
-    df['store_id'] = df['store_id'].astype(string)
 
     return df
 
