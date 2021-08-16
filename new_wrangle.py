@@ -39,7 +39,6 @@ def change_columns(df):
     #dtype into string
     df['store_id'] = df['store_id'].astype(str)
 
-
     #round to 2 decimal places
     df['fuel_price']=df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
     df['CPI']=df['CPI'].apply(lambda x: np.round(x, decimals=3))
@@ -141,10 +140,10 @@ def address_outliers(df):
     This function addresses outliers with store type
     and it change the store type to be corrected
     '''
-    df[df['store_id'] ==3] = df.loc[df['store_id'] == 3].replace({'B':'C'})
-    df[df['store_id'] ==5] = df.loc[df['store_id'] == 5].replace({'B':'C'})
-    df[df['store_id'] ==33] = df.loc[df['store_id'] == 33].replace({'A':'C'})
-    df[df['store_id'] ==36] = df.loc[df['store_id'] == 36].replace({'A':'C'})
+    df[df['store_id'] == '3'] = df.loc[df['store_id'] == '3'].replace({'B':'C'})
+    df[df['store_id'] == '5'] = df.loc[df['store_id'] == '5'].replace({'B':'C'})
+    df[df['store_id'] == '33'] = df.loc[df['store_id'] == '33'].replace({'A':'C'})
+    df[df['store_id'] == '36'] = df.loc[df['store_id'] == '36'].replace({'A':'C'})
 
     return df
 
