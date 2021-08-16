@@ -19,14 +19,11 @@ def acquire_data():
 
 ############################ Change Dtypes and Names Function ##############################
 
-def change_columns():
+def change_columns(df):
     '''
     This function changes column names, dtypes and rounds decimal places
     then returns a cleaned dataframe
     '''
-    #acquire data
-    df= acquire_data()
-
     #change dtype for Date 
     df.Date = pd.to_datetime(df.Date, dayfirst=True)
 
@@ -45,14 +42,11 @@ def change_columns():
 
 ############################ New Features Function ##############################
 
-def new_features():
+def new_features(df):
     '''
     This function creates several new columns
     and returns the completed dataframe
     '''
-    #acquire change column function
-    df = change_columns()
-
     #create column to identify month
     df['month'] = pd.DatetimeIndex(df['Date']).month_name()
     #create column to identify month!
@@ -92,14 +86,11 @@ def new_features():
 
 ############################ Seasons Function ##############################
 
-def season_column():
+def season_column(df):
     '''
     This function creates a new column called season
     using the month column
     '''
-    #acquire the new features function
-    df = new_features()
-
     #create season column
     df.loc[df['month'] == 'January','season'] ='Winter'
     df.loc[df['month'] == 'February','season'] ='Winter'
@@ -143,13 +134,13 @@ def wrangle_walmart():
     df = acquire_data()
     
     # change columns
-    df = change_columns()
+    df = change_columns(df)
 
     # new columns
-    df = new_features()
+    df = new_features(df)
 
     # season column
-    df = season_column()
+    df = season_column(df)
     
     # holiday column
     df = add_which_holiday(df)
