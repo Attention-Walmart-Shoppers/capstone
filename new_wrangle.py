@@ -78,6 +78,10 @@ def new_features(df):
     df['gas_delta_weekly'] = df.groupby('store_id').fuel_price.diff(periods=1)
     #change in gas prices by year
     df['gas_delta_yearly'] = df.groupby('store_id').fuel_price.diff(periods=52)
+    #last year sales
+    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(-52)
+    #last week sales
+    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(-1)
 
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
