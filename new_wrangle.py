@@ -79,9 +79,9 @@ def new_features(df):
     #change in gas prices by year
     df['gas_delta_yearly'] = df.groupby('store_id').fuel_price.diff(periods=52)
     #last year sales
-    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(-52)
+    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(52)
     #last week sales
-    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(-1)
+    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(1)
 
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
@@ -180,14 +180,14 @@ def wrangle_walmart():
     # change columns
     df = change_columns(df)
 
+    # holiday column
+    df = add_which_holiday(df)
+    
     # new columns
     df = new_features(df)
 
     # season column
     df = season_column(df)
-    
-    # holiday column
-    df = add_which_holiday(df)
 
     #address outliers
     df = address_outliers(df)
