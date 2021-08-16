@@ -78,6 +78,20 @@ def new_features(df):
     df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(-52)
     #sales for last week
     df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(-1)
+    
+    #new column pre_christmas and add zeros
+    df ['pre_christmas'] = 0
+    #getting the list for pre_christmas
+    pre_c= ['2010-12-24', '2010-12-17', '2011-12-23', '2011-12-16']
+    #add value 1 for only pre_christmas weeks
+    df.loc[pre_c, 'pre_christmas'] = 1
+
+    #ADD TAX SEASON
+    df2['tax_season'] = 0 
+    #getting the list for tax
+    tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
+    #add value 1 for only for the list above
+    df.loc[tax, 'tax_season'] = 1
 
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
@@ -129,6 +143,24 @@ def address_outliers(df):
 
     return df
 
+
+########################### Create dummy Variables Function ###########################
+
+def create_dummies (df, dumm_col = ['holiday_name']):
+    '''
+    Takes in a df and columns to create dummies.
+    retunr the original df with de new columns (dummies)
+    '''
+    #create dummy variables 
+    for col in dumm_col:
+        #create dummies
+        df_dummies = pd.get_dummies(df[col], dummy_na=False)
+        #  concat df_dummies with my df
+        df = pd.concat([df, df_dummies], axis =1)
+    #drop no_holiday columns and year
+    df = df.drop(columns = ['no_holiday'])
+    return df
+
 ############################ Wrangle Walmart Function ##############################
 
 def wrangle_walmart():
@@ -154,6 +186,9 @@ def wrangle_walmart():
 
     #address outliers
     df = address_outliers(df)
+
+    #create dummies
+    df = create_dummies (df)
 
     return df
 
@@ -226,3 +261,47 @@ def add_which_holiday(df):
     df = df.fillna('no_holiday')
     
     return df
+
+############################ Scale  ##############################
+def scaled_df ( train_df , test_df, columns,  scaler):
+    '''
+    Take in a 3 df and a type of scaler that you  want to  use. it will scale all columns
+    except object type. Fit a scaler only in train and tramnsform in train, validate and test.
+    returns  new dfs with the scaled columns.
+    scaler : MinMaxScaler() or RobustScaler(), StandardScaler() 
+    Example:
+    scaled_df( X_train , X_test, columns , RobustScaler())
+    
+    '''
+    #import
+    from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
+    # fit our scaler
+    scaler.fit(train_df[columns])
+    # get our scaled arrays
+    train_scaled = scaler.transform(train_df[columns])
+    test_scaled= scaler.transform(test_df[columns])
+
+    # convert arrays to dataframes
+    train_scaled_df = pd.DataFrame(train_scaled, columns=columns).set_index([train_df.index.values])
+    test_scaled_df = pd.DataFrame(test_scaled, columns=columns).set_index([test_df.index.values])
+
+    #add the columns that are not scaled
+    train_scaled_df = pd.concat([train_scaled_df, train_df.drop(columns = columns) ], axis= 1 )
+    test_scaled_df = pd.concat([test_scaled_df, test_df.drop(columns = columns) ], axis= 1 )
+    #plot
+    for col in columns: 
+        plt.figure(figsize=(13, 6))
+        plt.subplot(121)
+        plt.hist(train_df[col], ec='black')
+        plt.title('Original')
+        plt.xlabel(col)
+        plt.ylabel("counts")
+        plt.subplot(122)
+        plt.hist(train_scaled_df[col],  ec='black')
+        plt.title('Scaled')
+        plt.xlabel(col)
+        plt.ylabel("counts")
+
+
+
+    return train_scaled_df,  test_scaled_df
