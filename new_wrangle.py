@@ -75,27 +75,6 @@ def new_features(df):
     df['gas_delta_weekly'] = df.groupby('store_id').fuel_price.diff(periods=1)
     #change in gas prices by year
     df['gas_delta_yearly'] = df.groupby('store_id').fuel_price.diff(periods=52)
-<<<<<<< HEAD
-    #sales from last year
-    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(-52)
-    #sales for last week
-    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(-1)
-    
-    #new column pre_christmas and add zeros
-    df ['pre_christmas'] = 0
-    #getting the list for pre_christmas
-    pre_c= ['2010-12-24', '2010-12-17', '2011-12-23', '2011-12-16']
-    #add value 1 for only pre_christmas weeks
-    df.loc[pre_c, 'pre_christmas'] = 1
-
-    #ADD TAX SEASON
-    df2['tax_season'] = 0 
-    #getting the list for tax
-    tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
-    #add value 1 for only for the list above
-    df.loc[tax, 'tax_season'] = 1
-=======
->>>>>>> b8429532cf8602328630fc659420a6af671f272f
 
     #fill delta nulls with 0
     df['sales_delta_weekly'] = df['sales_delta_weekly'].fillna(0)
@@ -204,10 +183,7 @@ def train_test(df, target):
     then returns X_train, y_train, X_test and y_test with their respective shapes
     '''
     # split df into test (20%) and train_validate (80%)
-    train, test = train_test_split(df, test_size=0.2, random_state=123)
-
-    # split test off into train (70% of 80% = 56%)
-    test = train_test_split(train, test_size=0.3, random_state=123)
+    train, test = train_test_split(df, test_size=0.3, random_state=123)
 
     # split train into X (dataframe, drop target) & y (series, keep target only)
     X_train = train.drop(columns=[target])
