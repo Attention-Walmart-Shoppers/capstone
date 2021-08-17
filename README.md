@@ -5,16 +5,16 @@
 The goal of this project was to build a sales forecast model that could potentially be used by a regional Wal Mart manager to help manage inventory needs by forecasting consumer demand one week in advance.   We used the data provided by the Kaggle Walmart Recruiting - Store Sales Forecasting challenge which contained weekly sales, holiday flags, temperature, fuel prices, CPI and unemployment by store id and weekly time periods.  After exploring the provided data and identifying potential sales drivers, we utilized the time series data to engineer features we felt would provide a regression model some predictive value.  The biggest challenge in identifying temporal trends that we could leverage in our modeling came when trying to organizing our data in a manner from which we could extract information during the preparation stage.  By varying the lag on our features we were able to overcome the temporal challenges and contructed several regression models that outperformed our benchmark.  Our benchmark was established by using the prior year's weekly_sales data as our forecasts and calculating an RMSE score of 569,729 referencing the actual weekly sales data in our test dataset.  We utilized OLS, LASSOLARS & Polynomial Regression models.  All outperformed the benchmark but our Polynomial model was the best performer with an RMSE score of 292,982. 
 
 ### Project Deliverables:
-> - Deliver 10 minute presentation walkthrough, and slide presentation communicating to our stakeholders:
-    * the project need and how we attempted to solve it
-    * the assumptions and hypotheses we had going into project
-        * how these panned out and evolved throughout the process
-    * how we defined our target variable
-    * how we handled the data and why we made the decisions during preparation we did
-    * our exploratory findings
-    * our modeling results
-    * what methodologies, tools and skills we deployed during the project pipeline
-    * Conclusion, Recommendations & Next Steps
+> Deliver 10 minute presentation walkthrough, and slide presentation communicating to our stakeholders:
+- [] the project need and how we attempted to solve it
+- [] the assumptions and hypotheses we had going into project
+    * how these panned out and evolved throughout the process
+- [] how we defined our target variable
+- [] how we handled the data and why we made the decisions during preparation we did
+- [] our exploratory findings
+- [] our modeling results
+- [] what methodologies, tools and skills we deployed during the project pipeline
+- [] Conclusion, Recommendations & Next Steps
 
 ### Data Dictionary:
 |Feature|Datatype|Description|
