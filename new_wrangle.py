@@ -90,20 +90,6 @@ def new_features(df):
     df = df.set_index('Date').sort_index()
 
 
-    #create a new column pre_christmas
-    df['pre_christmas'] = 0
-    #getting the list for pre_christmas
-    pre_c= ['2010-12-24', '2010-12-17', '2011-12-23', '2011-12-16']
-    #add value 1 for only pre_christmas weeks
-    df.loc[pre_c, 'pre_christmas'] = 1
-
-    #ADD TAX SEASON
-    df['tax_season'] = 0 
-    #getting the list for tax
-    tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
-    #add value 1 for only for the list above
-    df.loc[tax, 'tax_season'] = 1
-
     return df
 
 
@@ -165,6 +151,10 @@ def add_which_holiday(df):
     labor_days = ['2010-09-10', '2011-09-09', '2012-09-07']
 
     thanksgivings = ['2010-11-26', '2011-11-25', '2012-11-23']
+
+    pre_c= ['2010-12-24', '2010-12-17', '2011-12-23', '2011-12-16']
+
+    tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
     
     # turn christmas list into datetimes 
     dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in christmases]
@@ -185,6 +175,14 @@ def add_which_holiday(df):
     dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in thanksgivings] 
     # add super bowl where dates match list
     df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'thanksgiving'
+
+    #add pre_christmas
+    df.loc[pre_c, 'holiday_name'] = 'pre_christmas'
+
+    #add tax_season
+    df.loc[tax, 'holiday_name'] = 'tax_season'
+    
+
     
     df = df.fillna('no_holiday')
     
