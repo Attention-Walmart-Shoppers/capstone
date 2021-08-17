@@ -2,12 +2,12 @@
 
 ## Project Summary
 
-The goal of this project was to utilize 
+The goal of this project was to build a sales forecast model that could potentially be used by a regional Wal Mart manager to help manage inventory needs by forecasting consumer demand one week in advance.   We used the data provided by the Kaggle Walmart Recruiting - Store Sales Forecasting challenge which contained weekly sales, holiday flags, temperature, fuel prices, CPI and unemployment by store id and weekly time periods.  After exploring the provided data and identifying potential sales drivers, we utilized the time series data to engineer features we felt would provide a regression model some predictive value.  The biggest challenge in identifying temporal trends that we could leverage in our modeling came when trying to organizing our data in a manner from which we could extract information during the preparation stage.  By varying the lag on our features we were able to overcome the temporal challenges and contructed several regression models that outperformed our benchmark.  Our benchmark was established by using the prior year's weekly_sales data as our forecasts and calculating an RMSE score of 569,729 referencing the actual weekly sales data in our test dataset.  We utilized OLS, LASSOLARS & Polynomial Regression models.  All outperformed the benchmark but our Polynomial model was the best performer with an RMSE score of 292,982.   
 
-||Data Dictionary||
+|  |Data Dictionary|  |
 |Feature|Datatype|Description|
 |:-------|:-------|:----------|
-|Date|Datetime|week ending Friday|
+|Date|Datetime|weeks ending Friday|
 |store_id|int64|unique store identifier (45 stores)|
 |weekly_sales |float64|sales for the given store|
 |holiday_flag|int64|boolean indicator of holiday week. Holidays inlcude: SuperBowl, Labor Day, Thanksgiving/Black Friday & Christmas|
