@@ -282,10 +282,12 @@ def train_test(df, target):
 
 
 ############################ Scale  ##############################
-def scaled_df ( train_df , test_df, columns,  scaler):
+def scaled_df ( train_df , test_df, columns,  scaler, graphs = True):
     '''
     Take in a 3 df and a type of scaler that you  want to  use. it will scale all columns
     except object type. Fit a scaler only in train and tramnsform in train, validate and test.
+    if graphs = True, will show distributions
+    To turn off graphs set graphs = False
     returns  new dfs with the scaled columns.
     scaler : MinMaxScaler() or RobustScaler(), StandardScaler() 
     Example:
@@ -305,37 +307,98 @@ def scaled_df ( train_df , test_df, columns,  scaler):
     test_scaled_df = pd.DataFrame(test_scaled, columns=columns).set_index([test_df.index.values])
 
 
-    #plot
-    for col in columns: 
-        plt.figure(figsize=(13, 6))
-        plt.subplot(121)
-        plt.hist(train_df[col], ec='black')
-        plt.title('Original')
-        plt.xlabel(col)
-        plt.ylabel("counts")
-        plt.subplot(122)
-        plt.hist(train_scaled_df[col],  ec='black')
-        plt.title('Scaled')
-        plt.xlabel(col)
-        plt.ylabel("counts")
+    if graphs == True:
+        #plot
+        for col in columns: 
+            plt.figure(figsize=(13, 6))
+            plt.subplot(121)
+            plt.hist(train_df[col], ec='black')
+            plt.title('Original')
+            plt.xlabel(col)
+            plt.ylabel("counts")
+            plt.subplot(122)
+            plt.hist(train_scaled_df[col],  ec='black')
+            plt.title('Scaled')
+            plt.xlabel(col)
+            plt.ylabel("counts")
 
 
     return train_scaled_df,  test_scaled_df
 
 
-def split_scale (df, target, scaler):
+################## New Index Function ########################
+
+def get_new_index(df):
     '''
-    takes in a df and creates dummy variablesn, select only the n umeric columns and  split into X_train, y_train, 
-    X_test, y_test and scaled X_train, X_test.
-    return   X_train_scaled, y_train_scaled, X_test, y_test
+    This function takes in the walmart dataframe
+    Resets the index
+    Calculates a new field from date and store_id
+    and set's that as the index
+    Use before splitting into train and test
     '''
+    # reset the index
+    df = df.reset_index()
 
-    #split
-    train, test, X_train, y_train, X_test, y_test = train_test(df, target)
+    # create new index from the Date and the Store id
+    # if issue Check names of the date and store id columns
+    df['id'] = df['Date'].astype('string') + '_store_'+ df['store_id']
 
-    #select the columns to scale
-    columns =  X_train.select_dtypes(exclude='object').columns.to_list()
-    #scale 
-    X_train_scaled, X_test_scaled = scaled_df( X_train , X_test, columns , scaler)
+    # set id column as the new index
+    df = df.set_index('id')
 
-    return train, test,  X_train_scaled, X_test_scaled, y_train, y_test
+    return df
+
+#################### Split & Scale Function #########################
+
+def split_scale (df, target, scaler = None):
+    ''' 
+    This function takes in a dataframe
+    A Target variable
+    And An optional argument Scaler (i.e. MinMaxScaler())
+    If there is no Scaler argument: Function drops nulls, 
+    Resets index, and splits in to train and test (ONLY RETURNS 2 THINGS)
+    ---
+    train, test = split_scale(df, target)
+    
+    ~~~~~~~~~
+
+    If there is a scaler argument: function drops nulls, 
+    resets index, scales only numeric columns,
+    splits into, train, test, and further 
+    into X_train_scaled, X_test_scaled, y_train, y_test
+    (RETURNS 6 THINGS) 
+    ---
+    train, test, X_train_scaled, X_test_scaled, y_train, y_test = split_scale(df, target, scaler = MinMaxScaler())
+    '''
+    # Drop NaNs from creating new features (first year of data)
+    df = df.dropna()
+    
+    # Create new index from store ID and date 
+    df = get_new_index(df)
+    
+    # If no scaler argument input, only splits train and test (for exploration)
+    if scaler == None:
+        # split df into test (20%) and train_validate (80%)
+        train, test = train_test_split(df, test_size=0.3, random_state=123)
+        # Have function print datasets shape
+        print(f'train -> {train.shape}')
+        print(f'test -> {test.shape}')
+        # return only train and test
+        return train, test
+       
+    # if scaler argument is present, further splits into Xy dataframes
+    else:
+        # Turn Datetime back into object
+        df['Date'] = df['Date'].astype('object')
+        
+        #split using train test split function above
+        train, test, X_train, y_train, X_test, y_test = train_test(df, target)
+        
+        #select the columns to scale
+        columns =  X_train.select_dtypes(exclude='object').columns.to_list()
+        
+        #scale 
+        X_train_scaled, X_test_scaled = scaled_df( X_train , X_test, columns , scaler, graphs = False)
+
+        return train, test,  X_train_scaled, X_test_scaled, y_train, y_test
+       
