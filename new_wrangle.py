@@ -32,7 +32,7 @@ def change_columns(df):
     df.Date = pd.to_datetime(df.Date, dayfirst=True)
 
     #change column names
-    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size"})
+    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size", "CPI": "inflation"})
 
     #change dtype for temp
     df.temperature = df.temperature.astype(int)
@@ -42,7 +42,7 @@ def change_columns(df):
 
     #round to 2 decimal places
     df['fuel_price']=df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
-    df['CPI']=df['CPI'].apply(lambda x: np.round(x, decimals=3))
+    df['inflation']=df['inflation'].apply(lambda x: np.round(x, decimals=3))
 
     return df
 
@@ -66,7 +66,7 @@ def new_features(df):
     df['week_of_year'] = pd.DatetimeIndex(df['Date']).week
 
     #create column for deflating nominal data
-    df['deflated_series'] = df.weekly_sales / df.CPI
+    df['deflated_series'] = df.weekly_sales / df.inflation
     #change to 2 decimal places
     df['deflated_series']=df['deflated_series'].apply(lambda x: np.round(x, decimals=2))
 
