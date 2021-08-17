@@ -304,9 +304,7 @@ def scaled_df ( train_df , test_df, columns,  scaler):
     train_scaled_df = pd.DataFrame(train_scaled, columns=columns).set_index([train_df.index.values])
     test_scaled_df = pd.DataFrame(test_scaled, columns=columns).set_index([test_df.index.values])
 
-    #add the columns that are not scaled
-    train_scaled_df = pd.concat([train_scaled_df, train_df.drop(columns = columns) ], axis= 1 )
-    test_scaled_df = pd.concat([test_scaled_df, test_df.drop(columns = columns) ], axis= 1 )
+
     #plot
     for col in columns: 
         plt.figure(figsize=(13, 6))
