@@ -6,15 +6,15 @@ The goal of this project was to build a sales forecast model that could potentia
 
 ### Project Deliverables:
 > - Deliver 10 minute presentation walkthrough, and slide presentation communicating to our stakeholders:
-    - the project need and how we attempted to solve it
-    - the assumptions and hypotheses we had going into project
-        - how these panned out and evolved throughout the process
-    - how we defined our target variable
-    - how we handled the data and why we made the decisions during preparation we did
-    - our exploratory findings
-    - our modeling results
-    - what methodologies, tools and skills we deployed during the project pipeline
-    - Conclusion, Recommendations & Next Steps
+    * the project need and how we attempted to solve it
+    * the assumptions and hypotheses we had going into project
+        * how these panned out and evolved throughout the process
+    * how we defined our target variable
+    * how we handled the data and why we made the decisions during preparation we did
+    * our exploratory findings
+    * our modeling results
+    * what methodologies, tools and skills we deployed during the project pipeline
+    * Conclusion, Recommendations & Next Steps
 
 ### Data Dictionary:
 |Feature|Datatype|Description|
