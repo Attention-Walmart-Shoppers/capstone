@@ -4,7 +4,7 @@
 
 The goal of this project was to utilize 
 
-|Data Dictionary|
+||Data Dictionary||
 |Feature|Datatype|Description|
 |:-------|:-------|:----------|
 |Date|Datetime|week ending Friday|
