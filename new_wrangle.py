@@ -398,7 +398,7 @@ def split_scale (df, target, scaler = None):
     # if scaler argument is present, further splits into Xy dataframes
     else:
         # Turn Datetime back into object
-        df['Date'] = df['Date'].astype('object')
+        # df['Date'] = df['Date'].astype('object')
         
         #split using train test split function above
         train, test, X_train, y_train, X_test, y_test = train_test(df, target)
