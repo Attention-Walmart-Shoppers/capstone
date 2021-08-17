@@ -32,7 +32,7 @@ def change_columns(df):
     df.Date = pd.to_datetime(df.Date, dayfirst=True)
 
     #change column names
-    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size", "CPI": "inflation"})
+    df = df.rename(columns={"Store": "store_id", "Weekly_Sales": "weekly_sales", "Holiday_Flag": "holiday_flag", "Temperature": "temperature", "Fuel_Price": "fuel_price", "Unemployment": "unemployment", "Type": "store_type", "Size": "store_size"})
 
     #change dtype for temp
     df.temperature = df.temperature.astype(int)
@@ -42,7 +42,7 @@ def change_columns(df):
 
     #round to 2 decimal places
     df['fuel_price']=df['fuel_price'].apply(lambda x: np.round(x, decimals=2))
-    df['inflation']=df['inflation'].apply(lambda x: np.round(x, decimals=3))
+    df['CPI']=df['CPI'].apply(lambda x: np.round(x, decimals=3))
 
     return df
 
@@ -92,6 +92,32 @@ def new_features(df):
 
     return df
 
+########################### The this week/next week function #####################
+
+def this_week_next_week_lagger(df):
+    '''
+    This function creates the lags for next week
+    And renames the date column to this_week
+    '''
+    # rename columns for clarity with this week
+    df = df.rename(columns = {'weekly_sales': 'this_week_sales',
+                                'Date': 'this_week_date',
+                                'holiday_flag': 'this_week_holiday_flag', 
+                                'unemployment':'this_week_unemployment'})
+
+    #Get data for the prediction week from one year ago
+    df['next_week_1_year_ago'] = df.groupby('store_id').this_week_sales.shift(51)
+
+    # get next week data TARGET CREATION
+    df['next_week_sales_target'] = df.groupby('store_id').this_week_sales.shift(-1)
+
+    #create column showing the next_week's date
+    df['next_week_date'] = df.groupby('store_id').this_week_date.shift(-1)
+
+    # get whether next week is a holiday or not
+    df['next_week_holiday_flag'] = df.groupby('store_id').this_week_holiday_flag.shift(-1)
+
+    return df    
 
 ############################ Seasons Function ##############################
 
@@ -155,42 +181,32 @@ def add_which_holiday(df):
     pre_c= ['2010-12-24', '2010-12-17', '2011-12-23', '2011-12-16']
 
     tax= ['2010-04-02 ', '2010-04-09', '2011-04-01', '2011-04-08', '2012-04-06', '2012-04-13']
-    
-    # turn christmas list into datetimes 
-    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in christmases]
+
     # add column called holiday_name christmas where dates match list
-    df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'christmas'
-    
-    # turn super bowl list into date times
-    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in super_bowls]  
+    df.loc[df['next_week_date'].isin(christmases) == True, 'next_week_holiday_name'] = 'christmas'
+      
     #add super bowl where dates match list
-    df.loc[df.index.isin(dates_list) == True,'holiday_name'] = 'super_bowl'
+    df.loc[df['next_week_date'].isin(super_bowls) == True,'next_week_holiday_name'] = 'super_bowl'
     
-    # labor day list into date times
-    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in labor_days] 
     # add super bowl where dates match list
-    df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'labor_day'
+    df.loc[df['next_week_date'].isin(labor_days) == True, 'next_week_holiday_name'] = 'labor_day'
     
-    # thanksgiving list into date times
-    dates_list = [dt.datetime.strptime(date, "%Y-%m-%d").date() for date in thanksgivings] 
     # add super bowl where dates match list
-    df.loc[df.index.isin(dates_list) == True, 'holiday_name'] = 'thanksgiving'
+    df.loc[df['next_week_date'].isin(thanksgivings) == True, 'next_week_holiday_name'] = 'thanksgiving'
 
     #add pre_christmas
-    df.loc[pre_c, 'holiday_name'] = 'pre_christmas'
-
-    #add tax_season
-    df.loc[tax, 'holiday_name'] = 'tax_season'
+    df.loc[df['next_week_date'].isin(pre_c)==True, 'next_week_holiday_name'] = 'pre_christmas'
     
-
+    # fill the rest with string no_holiday
+    df['next_week_holiday_name'] = df['next_week_holiday_name'].fillna('no_holiday')
     
-    df = df.fillna('no_holiday')
+    df['next_week_date'] = pd.to_datetime(df.next_week_date, dayfirst=True)
     
     return df
 
 ########################### Create dummy Variables Function ###########################
 
-def create_dummies (df, dumm_col = ['holiday_name']):
+def create_dummies (df, dumm_col = ['next_week_holiday_name']):
     '''
     Takes in a df and columns to create dummies.
     retunr the original df with de new columns (dummies)
@@ -205,20 +221,35 @@ def create_dummies (df, dumm_col = ['holiday_name']):
     df = df.drop(columns = ['no_holiday'])
     return df
 
-############################ get past sales data ############################
+################## New Index Function ########################
 
-def get_past_sales_columns(df):
+def get_new_index(df):
     '''
-    This function takes in the dataframe
-    And creates new columns based on historical data.
-    Last year sales and last week sales
+    This function takes in the walmart dataframe
+    Resets the index
+    Calculates a new field from this_week_date and next_week_date and store_id
+    and set's that as the index
     '''
-    #last year sales
-    df['last_year_sales'] = df.groupby('store_id').weekly_sales.shift(52)
-    #last week sales
-    df['last_week_sales'] = df.groupby('store_id').weekly_sales.shift(1)
-    
+    # create new index from the 
+    # this_week_store_1_next_week
+    df['id'] = df['this_week_date'].dt.date.astype(str) + '_store_'+ df['store_id'] +'_' + df['next_week_date'].dt.date.astype(str)
+
+    # set id column as the new index
+    df = df.set_index('id')
+
     return df
+
+############################ Drop Columns Function ############################
+
+def column_dropper(df):
+    '''
+    This function drops the columns we won't be using 
+    '''
+
+    df = df.drop(columns = ['temperature', 'fuel_price', 'CPI'])
+
+    return df
+
 
 ############################ Wrangle Walmart Function ##############################
 
@@ -234,23 +265,23 @@ def wrangle_walmart():
     # change columns
     df = change_columns(df)
 
-    # new columns
-    df = new_features(df)
-    
-     # season column
-    df = season_column(df)
+    #do all the this week that week laging stuff
+    df = this_week_next_week_lagger(df)
     
     # holiday column
     df = add_which_holiday(df)
 
-    #address outliers
+    # address outliers
     df = address_outliers(df)
-    
-    # get last week and last years sales data
-    df = get_past_sales_columns(df)
 
-    #create dummies
-    df = create_dummies (df)
+    # create dummies
+    df = create_dummies(df)
+
+    # create new identifier index 
+    df = get_new_index(df)
+
+    # drop unneeded columns
+    df = column_dropper(df)
 
     return df
 
@@ -325,28 +356,6 @@ def scaled_df ( train_df , test_df, columns,  scaler, graphs = True):
 
     return train_scaled_df,  test_scaled_df
 
-
-################## New Index Function ########################
-
-def get_new_index(df):
-    '''
-    This function takes in the walmart dataframe
-    Resets the index
-    Calculates a new field from date and store_id
-    and set's that as the index
-    Use before splitting into train and test
-    '''
-    # reset the index
-    df = df.reset_index()
-
-    # create new index from the Date and the Store id
-    # if issue Check names of the date and store id columns
-    df['id'] = df['Date'].astype('string') + '_store_'+ df['store_id']
-
-    # set id column as the new index
-    df = df.set_index('id')
-
-    return df
 
 #################### Split & Scale Function #########################
 
