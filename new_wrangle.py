@@ -321,6 +321,7 @@ def scaled_df ( train_df , test_df, columns,  scaler):
         plt.xlabel(col)
         plt.ylabel("counts")
 
+
     return train_scaled_df,  test_scaled_df
 
 
