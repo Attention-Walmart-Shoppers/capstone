@@ -251,6 +251,39 @@ def get_new_index(df):
 
     return df
 
+#################################### Create Rolling in the Deep Function ############################
+def rolling_delta(df):
+    
+    '''
+    This function will calculate rolling monthly averages for CPI, f
+    fuel_price & Unemployment and reference these rolling avgs on weekly periods to calculate a MoM % change.
+    NOTE: Due to our modified index, the initial calcs for each store reference prvs store end data due to sequencing.
+    This issue is resolved 8 periods into the time series for each store when enough data for new store is in place. 
+    '''
+    
+    # calc monthly rolling avgs for each feature
+    df['fuel_4wk_rolling'] = df.fuel_price.rolling(4).mean()
+    df['cpi_4wk_rolling'] = df.CPI.rolling(4).mean()
+    df['unemp_4wk_rolling'] = df.this_week_unemployment.rolling(4).mean()
+    
+    # calc percent month-on-month delta on weekly monthly avg observation
+    df['avgMoM_perc_fuel'] = df.fuel_4wk_rolling.pct_change(4)
+    df['avgMoM_perc_cpi'] = df.cpi_4wk_rolling.pct_change(4)
+    df['avgMoM_perc_unemp'] = df.unemp_4wk_rolling.pct_change(4)
+    
+    # calc quarterly rolling avgs for each feature
+    df['fuel_quarterly_rolling'] = df.fuel_price.rolling(4).mean()
+    df['cpi_quarterly_rolling'] = df.CPI.rolling(4).mean()
+    df['unemp_quarterly_rolling'] = df.this_week_unemployment.rolling(4).mean()
+    
+    # calc percent quarter-on-quarter delta on weekly monthly avg observation
+    df['avgQoQ_perc_fuel'] = df.fuel_quarterly_rolling.pct_change(4)
+    df['avgQoQ_perc_cpi'] = df.cpi_quarterly_rolling.pct_change(4)
+    df['avgQoQ_perc_unemp'] = df.unemp_quarterly_rolling.pct_change(4)
+    
+    return df
+
+
 
 ############################ Wrangle Walmart Function ##############################
 
@@ -280,6 +313,9 @@ def wrangle_walmart():
 
     # create dummies
     df = create_dummies(df)
+    
+    #create rolling delta columns
+    df = rolling_delta(df)
 
     # create new identifier index 
     df = get_new_index(df)
