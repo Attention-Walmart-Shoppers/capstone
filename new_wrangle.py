@@ -5,6 +5,7 @@ import warnings
 warnings.filterwarnings("ignore")
 from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 import datetime as dt 
+from datetime import date
 import matplotlib.pyplot as plt
 
 ##################### ACQUIRE WALMART DATA #####################
@@ -126,11 +127,11 @@ def get_season(now_date):
     '''
     
     Y = 2000 # dummy leap year to allow input X-02-29 (leap day)
-    seasons = [('winter', (df.date(Y,  1,  1),  dt.date(Y,  3, 20))),
-           ('spring', (df.date(Y,  3, 21),  dt.date(Y,  6, 20))),
-           ('summer', (df.date(Y,  6, 21),  dt.date(Y,  9, 22))),
-           ('fall', (df.date(Y,  9, 23),  dt.date(Y, 12, 20))),
-           ('winter', (dt.date(Y, 12, 21),  dt.date(Y, 12, 31)))]
+    seasons = [('winter', (date(Y,  1,  1),  date(Y,  3, 20))),
+           ('spring', (date(Y,  3, 21),  date(Y,  6, 20))),
+           ('summer', (date(Y,  6, 21),  date(Y,  9, 22))),
+           ('fall', (date(Y,  9, 23),  date(Y, 12, 20))),
+           ('winter', (date(Y, 12, 21),  date(Y, 12, 31)))]
         
     now = now_date.replace(year=Y)
     
@@ -250,17 +251,6 @@ def get_new_index(df):
 
     return df
 
-############################ Drop Columns Function ############################
-
-def column_dropper(df):
-    '''
-    This function drops the columns we won't be using 
-    '''
-
-    df = df.drop(columns = ['temperature', 'fuel_price', 'CPI'])
-
-    return df
-
 
 ############################ Wrangle Walmart Function ##############################
 
@@ -293,9 +283,6 @@ def wrangle_walmart():
 
     # create new identifier index 
     df = get_new_index(df)
-
-    # drop unneeded columns
-    df = column_dropper(df)
 
     return df
 
