@@ -5,6 +5,7 @@ import warnings
 warnings.filterwarnings("ignore")
 from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 import datetime as dt 
+from datetime import date
 import matplotlib.pyplot as plt
 
 ##################### ACQUIRE WALMART DATA #####################
@@ -120,27 +121,36 @@ def this_week_next_week_lagger(df):
     return df    
 
 ############################ Seasons Function ##############################
+def get_season(now_date):
+    '''
+    This function gets the season from a dateteime
+    '''
+    
+    Y = 2000 # dummy leap year to allow input X-02-29 (leap day)
+    seasons = [('winter', (date(Y,  1,  1),  date(Y,  3, 20))),
+           ('spring', (date(Y,  3, 21),  date(Y,  6, 20))),
+           ('summer', (date(Y,  6, 21),  date(Y,  9, 22))),
+           ('fall', (date(Y,  9, 23),  date(Y, 12, 20))),
+           ('winter', (date(Y, 12, 21),  date(Y, 12, 31)))]
+        
+    now = now_date.replace(year=Y)
+    
+    season = next(season for season, (start, end) in seasons if start <= now <= end)
+    
+    return season
+
 
 def season_column(df):
     '''
-    This function creates a new column called season
-    using the month column
+    This function creates two new columns 
+    Season for this week date 
+    And season for next week date
+    Uses get_season function
     '''
-    #create season column
-    df.loc[df['month'] == 'January','season'] ='Winter'
-    df.loc[df['month'] == 'February','season'] ='Winter'
-    df.loc[df['month'] == 'March','season'] ='Spring'
-    df.loc[df['month'] == 'April','season'] ='Spring'
-    df.loc[df['month'] == 'May','season'] ='Summer'
-    df.loc[df['month'] == 'June','season'] ='Summer'
-    df.loc[df['month'] == 'July','season'] ='Summer'
-    df.loc[df['month'] == 'August','season'] ='Summer'
-    df.loc[df['month'] == 'September','season'] ='Summer'
-    df.loc[df['month'] == 'October','season'] ='Fall'
-    df.loc[df['month'] == 'November','season'] ='Fall'
-    df.loc[df['month'] == 'December','season'] ='Winter'
 
-    winter_dates = ['']
+    df['next_week_season'] = df.dropna().next_week_date.apply(get_season)
+
+    df['this_week_season'] = df.dropna().this_week_date.apply(get_season)
 
     return df
 
@@ -241,17 +251,6 @@ def get_new_index(df):
 
     return df
 
-############################ Drop Columns Function ############################
-
-def column_dropper(df):
-    '''
-    This function drops the columns we won't be using 
-    '''
-
-    df = df.drop(columns = ['temperature', 'fuel_price', 'CPI'])
-
-    return df
-
 
 ############################ Wrangle Walmart Function ##############################
 
@@ -269,6 +268,9 @@ def wrangle_walmart():
 
     #do all the this week that week laging stuff
     df = this_week_next_week_lagger(df)
+
+    # add seasons columns
+    df = season_column(df)
     
     # holiday column
     df = add_which_holiday(df)
@@ -281,9 +283,6 @@ def wrangle_walmart():
 
     # create new identifier index 
     df = get_new_index(df)
-
-    # drop unneeded columns
-    df = column_dropper(df)
 
     return df
 
