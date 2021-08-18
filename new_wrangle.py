@@ -257,7 +257,7 @@ def column_dropper(df):
     This function drops the columns we won't be using 
     '''
 
-    df = df.drop(columns = ['temperature', 'fuel_price', 'CPI'])
+    df = df.drop(columns = ['temperature'])
 
     return df
 
