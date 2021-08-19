@@ -49,6 +49,7 @@ def change_columns(df):
 
 
 ############################ New Features Function ##############################
+#------ From Original Version. Not used in final version of wrangle
 
 def new_features(df):
     '''
@@ -123,7 +124,7 @@ def this_week_next_week_lagger(df):
 ############################ Seasons Function ##############################
 def get_season(now_date):
     '''
-    This function gets the season from a dateteime
+    This function gets the season from a datetime
     '''
     
     Y = 2000 # dummy leap year to allow input X-02-29 (leap day)
@@ -221,7 +222,7 @@ def add_which_holiday(df):
 def create_dummies (df, dumm_col = ['next_week_holiday_name']):
     '''
     Takes in a df and columns to create dummies.
-    retunr the original df with de new columns (dummies)
+    returns the original df with de new columns (dummies)
     '''
     #create dummy variables 
     for col in dumm_col:
@@ -352,8 +353,9 @@ def train_test(df, target):
 ############################ Scale  ##############################
 def scaled_df ( train_df , test_df, columns,  scaler, graphs = True):
     '''
-    Take in a 3 df and a type of scaler that you  want to  use. it will scale all columns
-    except object type. Fit a scaler only in train and tramnsform in train, validate and test.
+    Take in a 3 dfs and a type of scaler that you  want to  use. 
+    It will scale all columns except object type. 
+    Fit a scaler only on train and transforms in train, validate and test.
     if graphs = True, will show distributions
     To turn off graphs set graphs = False
     returns  new dfs with the scaled columns.
