@@ -64,7 +64,7 @@ def select_rfe (X_df, y_df, n_features, method):
     return top_rfe
 
 
-##################### Recursive Feature Elimination (RFE) #####################
+##################### CALCULATE METRICS #####################
 def regression_errors(df, y, yhat):
     '''
     Takes in a dataframe , y = column with actual_values and yhat= name of the columns with predicted_values
