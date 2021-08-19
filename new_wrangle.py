@@ -125,6 +125,7 @@ def this_week_next_week_lagger(df):
     return df    
 
 ############################ Seasons Function ##############################
+
 def get_season(now_date):
     '''
     This function gets the season from a datetime
@@ -143,6 +144,7 @@ def get_season(now_date):
     
     return season
 
+############################ Seasons column ##############################
 
 def season_column(df):
     '''
@@ -256,6 +258,7 @@ def get_new_index(df):
     return df
 
 #################################### Create Rolling in the Deep Function ############################
+
 def rolling_delta(df):
     
     '''
@@ -286,8 +289,6 @@ def rolling_delta(df):
     df['avgQoQ_perc_unemp'] = df.unemp_quarterly_rolling.pct_change(12)
     
     return df
-
-
 
 ############################ Wrangle Walmart Function ##############################
 
@@ -351,9 +352,8 @@ def train_test(df, target):
     return train, test, X_train, y_train, X_test, y_test
 
 
+############################ Scale  Function ##############################
 
-
-############################ Scale  ##############################
 def scaled_df ( train_df , test_df, columns,  scaler, graphs = True):
     '''
     Take in a 3 dfs and a type of scaler that you  want to  use. 
@@ -453,11 +453,15 @@ def split_scale (df, target, scaler = None):
 
         return train, test,  X_train_scaled, X_test_scaled, y_train, y_test
        
-################ Collinearity ###############
+################ Collinearity of Unemployement Rate Function ###############
 
 features = ['avgMoM_perc_unemp', 'avgQoQ_perc_unemp', 'unemp_quarterly_rolling', 'unemp_4wk_rolling']
 
 def collinearity_unemployment(X_train_scaled):
+    '''
+    This function finds the collinearity of unemployment rate 
+    and outputs those printed values.
+    '''
     for i in features:
         corr, p = stats.pearsonr(X_train_scaled.this_week_unemployment, X_train_scaled[i])
         print(i)
@@ -474,8 +478,13 @@ def collinearity_unemployment(X_train_scaled):
     print('avgMoM_perc_unemp  v avgQoQ_perc_unemp')
     print(f'corr = {corr}', f'p = {p}')
     
-    
+################ Collinearity of Fuel Prices Function ###############
+
 def collinearity_fuel(X_train_scaled):
+    '''
+    This function finds the collinearity of fuel prices 
+    and outputs those printed values.
+    '''
     for i in features:
         corr, p = stats.pearsonr(X_train_scaled.fuel_price, X_train_scaled[i])
         print(i)
@@ -492,8 +501,13 @@ def collinearity_fuel(X_train_scaled):
     print('avgMoM_perc_fuel  v avgQoQ_perc_fuel')
     print(f'corr = {corr}', f'p = {p}')
     
-    
-def collinearity_cpi(X_train_scaled):    
+################ Collinearity of CPI Function ###############   
+
+def collinearity_cpi(X_train_scaled):
+    '''
+    This function finds the collinearity of CPI
+    and outputs those printed values.
+    '''
     for i in features:
         corr, p = stats.pearsonr(X_train_scaled.CPI, X_train_scaled[i])
         print(i)
