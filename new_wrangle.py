@@ -1,5 +1,7 @@
 import pandas as pd 
 import numpy as np
+from scipy import stats
+import math
 from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings("ignore")
@@ -7,6 +9,7 @@ from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 import datetime as dt 
 from datetime import date
 import matplotlib.pyplot as plt
+
 
 ##################### ACQUIRE WALMART DATA #####################
 
@@ -450,3 +453,60 @@ def split_scale (df, target, scaler = None):
 
         return train, test,  X_train_scaled, X_test_scaled, y_train, y_test
        
+################ Collinearity ###############
+
+features = ['avgMoM_perc_unemp', 'avgQoQ_perc_unemp', 'unemp_quarterly_rolling', 'unemp_4wk_rolling']
+
+def collinearity_unemployment(X_train_scaled):
+    for i in features:
+        corr, p = stats.pearsonr(X_train_scaled.this_week_unemployment, X_train_scaled[i])
+        print(i)
+        print(f'corr = {corr}', f'p = {p}')
+        print('--------------------')
+    
+    for i in features:
+        corr, p = stats.pearsonr(X_train_scaled.unemp_4wk_rolling, X_train_scaled[i])
+        print(i)
+        print(f'corr = {corr}', f'p = {p}')
+        print('--------------------')
+
+    corr, p = stats.pearsonr(X_train_scaled.avgMoM_perc_unemp, X_train_scaled.avgQoQ_perc_unemp)
+    print('avgMoM_perc_unemp  v avgQoQ_perc_unemp')
+    print(f'corr = {corr}', f'p = {p}')
+    
+    
+def collinearity_fuel(X_train_scaled):
+    for i in features:
+        corr, p = stats.pearsonr(X_train_scaled.fuel_price, X_train_scaled[i])
+        print(i)
+        print(f'corr = {corr}', f'p = {p}')
+        print('--------------------')
+
+    for i in features:
+        corr, p = stats.pearsonr(X_train_scaled.fuel_4wk_rolling, X_train_scaled[i])
+        print(i)
+        print(f'corr = {corr}', f'p = {p}')
+        print('--------------------')
+
+    corr, p = stats.pearsonr(X_train_scaled.avgMoM_perc_fuel, X_train_scaled.avgQoQ_perc_fuel)
+    print('avgMoM_perc_fuel  v avgQoQ_perc_fuel')
+    print(f'corr = {corr}', f'p = {p}')
+    
+    
+def collinearity_cpi(X_train_scaled):    
+    for i in features:
+        corr, p = stats.pearsonr(X_train_scaled.CPI, X_train_scaled[i])
+        print(i)
+        print(f'corr = {corr}', f'p = {p}')
+        print('--------------------')
+
+    for i in features:
+        corr, p = stats.pearsonr(X_train_scaled.CPI, X_train_scaled[i])
+        print(i)
+        print(f'corr = {corr}', f'p = {p}')
+        print('--------------------')
+
+    corr, p = stats.pearsonr(X_train_scaled.CPI, X_train_scaled.avgQoQ_perc_cpi)
+    print('avgMoM_perc_cpi  v avgQoQ_perc_cpi')
+    print(f'corr = {corr}', f'p = {p}')
+
