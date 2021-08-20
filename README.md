@@ -17,33 +17,63 @@ The goal of this project was to build a sales forecast model that could potentia
 - [] Conclusion, Recommendations & Next Steps
 
 ### Data Dictionary:
-|Feature|Datatype|Description|
-|:-------|:-------|:----------|
-|Date|Datetime|weeks ending Friday|
-|store_id|int64|unique store identifier (45 stores)|
-|weekly_sales |float64|sales for the given store|
-|holiday_flag|int64|boolean indicator of holiday week. Holidays inlcude: SuperBowl, Labor Day, Thanksgiving/Black Friday & Christmas|
-|temperature|int64 |temperature in Farenheit on Date of sale|
-|fuel_price|float64|cost of fuel in the region|
-|CPI|float64|prevailing consumer price index|
-|Unemployment|float64|prevailing unemployment rate|
-|store_type|object|three undefined but labeled store types|
-|store_size|int64|size by square feet|
-|holiday_name|object|name of flagged holiday period|
-|month|object|month during which Date occurs|
-|year|int64|year during which Date occurs|
-|quarter|int64|integer representing calendar quarter during which Date occurs|
-|weekday|object|weekday on which Date falls|
-|deflated_series|float64|weekly_sales delfated bye CPI|
-|sales_delta_weekly|float64|weekly difference in weekly_sales by store_id|
-|sales_delta_yearly|float64|yearly difference in weekly_sales by store_id|
-|gas_delta_weekly|float64|weekly difference in fuel_price by store_id|
-|gas_delta_yearly|float64|yearly difference in fuel_price by store_id|
-|last_year_sales|float64|weekly sales for same store_id one year prior|
-|last_week_sales|float64|weekly sales for same store_id one week prior|
-|pre_christmas|int64|two weeks prior to Christmas holiday flag|
-|tax_season|int64|first two weeks in April|
-|season|object|season during which Date occurs: Winter, Spring, Summer, Fall|
+
+### -  Initial Data
+
+| Feature          | Datatype | Description                                                                                                      |
+|------------------|----------|------------------------------------------------------------------------------------------------------------------|
+| `Store`          | int64    | Unique store identifier (45 stores)                                                                              |
+| `Date`           | object   | Weeks ending Friday                                                                                              |
+|  `Weekly_Sales`  | float64  | Sales for the given store                                                                                        |
+| `Holiday_Flag`   | int64    | Boolean indicator of holiday week. Holidays include: SuperBowl, Labor Day, Thanksgiving/Black Friday & Christmas |
+| `Temperature`    | float64  | Temperature in Farenheit on Date of sale                                                                         |
+| `Fuel_Price`     | float64  | Cost of fuel in the region                                                                                       |
+| `CPI`            | float64  | Prevailing consumer price index                                                                                  |
+| `Unemployment`   | float64  | Prevailing unemployment rate                                                                                     |
+| `Type`           | float64  | Three  types of stores  by size : A (large ) , B (medium), C (small)                                             |
+| `Size`           | int64    | Size by square feet                                                                                              |
+
+### - Final
+
+| Feature                   | Datatype       | Description                                                                                                      |
+|---------------------------|----------------|------------------------------------------------------------------------------------------------------------------|
+| `store_id`                | object         | Unique store identifier (45 stores)                                                                              |
+| `this_week_date           | datetime64[ns] | Date of the current week ending Friday                                                                           |
+|  `this_week_sales`        | float64        | Week sales for the given store                                                                                   |
+| `this_week_holiday_flag`  | int64          | Boolean indicator of holiday week. Holidays include: SuperBowl, Labor Day, Thanksgiving/Black Friday & Christmas |
+| `temperature`             | float64        | Temperature in Farenheit on Date of sale                                                                         |
+| `fuel_price`              | float64        | Cost of fuel in the region                                                                                       |
+| `CPI`                     | float64        | Prevailing consumer price index                                                                                  |
+| `this_week_unemployment`  | float64        | Prevailing unemployment rate                                                                                     |
+| `store_type`              | float64        | Three  types of stores  by size : A (large ) , B (medium), C (small)                                             |
+| `store_size`              | int64          | Size by square feet                                                                                              |
+| `next_week_1_year_ago`    | float64        | Weekly sales 51 weeks ago                                                                                        |
+| `next_week_date`          | datetime64[ns] | Date of the next week                                                                                            |
+| `next_week_holiday_flag`  | float64        | Boolean indicator of holliday next week                                                                          |
+| 'this_week_season'        | object         | Season during next week occurs :Winter, Spring, Summer, Fall                                                     |
+| 'this_week_season'        | object         | Season during next week occurs :Winter, Spring, Summer, Fall                                                     |
+| `next_week_holiday_name`  | object         | Holiday name of the next week                                                                                    |
+| `christmas`               | uint8          | Christmas holiday flag based on next week                                                                        |
+| `labor_day`               | uint8          | Pre-Christmas holiday flag based on next week                                                                    |
+| `labor_day`               | uint8          | Pre-Christmas holiday flag based on next week                                                                    |
+| `superbowl`               | uint8          | Superbowl holiday flag based on next week                                                                        |
+| `thanksgiving`            | unit8          | Thanksgiving holiday flag based on next week                                                                     |
+| `fuel_4wk_rolling`        | float64        |     (US dollar)                                                                                                             |
+| `cpi_4wk_rolling`         | float64        |                                                                                                                  |
+| `unemp_4wk_rolling`       | float64        |                                                                                                                  |
+| `avgMoM_perc_fuel`        | float64        |                                                                                                                  |
+| `avgMoM_perc_unemp`       | float64        |                                                                                                                  |
+| `fuel_quarterly_rolling`  | float64        |                                                                                                                  |
+| `cpi_quarterly_rolling`   | float64        |                                                                                                                  |
+| `unemp_quarterly_rolling` | float64        |                                                                                                                  |
+| `avgQoQ_perc_fuel`        | float64        |                                                                                                                  |
+| `avgQoQ_perc_cpi`         | float64        |                                                                                                                  |
+| `avgQoQ_perc_unemp`       | float64        |                                                                                                                  |
+
+#### Target
+| Feature                   | Datatype       | Description                                                                                                      |
+|---------------------------|----------------|------------------------------------------------------------------------------------------------------------------|
+| `next_week_sales_target`                | float64        | prediction (next week sales ) US dollar
 
 ## Stages of DS Pipeline
 Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> Delivery
