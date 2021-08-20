@@ -2,7 +2,7 @@
 
 ## Project Summary
 
-The goal of this project was to build a sales forecast model that could potentially be used by a regional Wal Mart manager to help manage inventory needs by forecasting consumer demand one week in advance.   We used the data provided by the Kaggle Walmart Recruiting - Store Sales Forecasting challenge which contained weekly sales, holiday flags, temperature, fuel prices, CPI and unemployment by store id and weekly time periods.  After exploring the provided data and identifying potential sales drivers, we utilized the time series data to engineer features we felt would provide a regression model some predictive value.  The biggest challenge in identifying temporal trends that we could leverage in our modeling came when trying to organizing our data in a manner from which we could extract information during the preparation stage.  By varying the lag on our features we were able to overcome the temporal challenges and contructed several regression models that outperformed our benchmark.  Our benchmark was established by using the prior year's weekly_sales data as our forecasts and calculating an RMSE score of 569,729 referencing the actual weekly sales data in our test dataset.  We utilized OLS, LASSOLARS & Polynomial Regression models.  All outperformed the benchmark but our Polynomial model was the best performer with an RMSE score of 292,982. 
+The goal of this project was to build a sales forecast model that could potentially be used by a regional sales manager to help manage inventory needs by forecasting consumer demand one week in advance.   We used the data provided by the Kaggle Walmart Recruiting - Store Sales Forecasting challenge which contained weekly sales, holiday flags, temperature, fuel prices, CPI and unemployment by store id and weekly time periods.  After exploring the provided data and identifying potential sales drivers, we utilized the time series data to engineer features we felt would provide a regression model some predictive value.  The biggest challenge in identifying temporal trends that we could leverage in our modeling came when trying to organizing our data in a manner from which we could extract information during the preparation stage.  By varying the lag on our features we were able to overcome the temporal challenges and contructed several regression models that outperformed our benchmark.  Our benchmark was established by using the prior year's weekly_sales data as our forecasts and calculating an RMSE score of $91,145.2822.  We utilized OLS, LASSOLARS & Polynomial Regression models.  All outperformed the benchmark but our Polynomial Regression model which utilized Recursive Feature Elimination was the best performer with an RMSE score of $64,607.1719. 
 
 ### Project Deliverables:
 > Deliver 10 minute presentation walkthrough, and slide presentation communicating to our stakeholders:
@@ -58,22 +58,22 @@ The goal of this project was to build a sales forecast model that could potentia
 | `labor_day`               | uint8          | Pre-Christmas holiday flag based on next week                                                                    |
 | `superbowl`               | uint8          | Superbowl holiday flag based on next week                                                                        |
 | `thanksgiving`            | unit8          | Thanksgiving holiday flag based on next week                                                                     |
-| `fuel_4wk_rolling`        | float64        |     (US dollar)                                                                                                             |
-| `cpi_4wk_rolling`         | float64        |                                                                                                                  |
-| `unemp_4wk_rolling`       | float64        |                                                                                                                  |
-| `avgMoM_perc_fuel`        | float64        |                                                                                                                  |
-| `avgMoM_perc_unemp`       | float64        |                                                                                                                  |
-| `fuel_quarterly_rolling`  | float64        |                                                                                                                  |
-| `cpi_quarterly_rolling`   | float64        |                                                                                                                  |
-| `unemp_quarterly_rolling` | float64        |                                                                                                                  |
-| `avgQoQ_perc_fuel`        | float64        |                                                                                                                  |
-| `avgQoQ_perc_cpi`         | float64        |                                                                                                                  |
-| `avgQoQ_perc_unemp`       | float64        |                                                                                                                  |
+| `fuel_4wk_rolling`        | float64        | avg fuel price index over preceding 4 week period                                                                |
+| `cpi_4wk_rolling`         | float64        | avg CPI index over preceding 4 week period                                                                       |
+| `unemp_4wk_rolling`       | float64        | avg CPI index over preceding 4 week period                                                                       |
+| `avgMoM_perc_fuel`        | float64        | % change of the current fuel_4wk_rolling observation vs observation 4 weeks earlier                              |
+| `avgMoM_perc_unemp`       | float64        | % change of the current unemp_4wk_rolling observation vs observation 4 weeks earlier                             |
+| `fuel_quarterly_rolling`  | float64        | avg fuel price index over preceding 12 week period                                                               |
+| `cpi_quarterly_rolling`   | float64        | avg CPI index over preceding 12 week period                                                                      |
+| `unemp_quarterly_rolling` | float64        | avg unemployment index over preceding 12 week period                                                             |
+| `avgQoQ_perc_fuel`        | float64        | % change of the current fuel_quarterly_rolling observation vs observation 12 weeks earlier                       |
+| `avgQoQ_perc_cpi`         | float64        | % change of the current cpi_quarterly_rolling observation vs observation 12 weeks earlier                        |
+| `avgQoQ_perc_unemp`       | float64        | % change of the current unemp_quarterly_rolling observation vs observation 12 weeks earlier                      |
 
 #### Target
 | Feature                   | Datatype       | Description                                                                                                      |
 |---------------------------|----------------|------------------------------------------------------------------------------------------------------------------|
-| `next_week_sales_target`                | float64        | prediction (next week sales ) US dollar
+| `next_week_sales_target`                | float64        | target (next week sales ) US dollar
 
 ## Stages of DS Pipeline
 Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> Delivery
