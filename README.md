@@ -86,10 +86,11 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Train multiple different regression models on train dataset.
 - [x] Evaluate models on test dataset.
 - [] Document conclusions, takeaways, and next steps in the Final Report Notebook.
+- [x] All steps are described in: [Trello](https://trello.com/b/g2atWZrU/attention-walmart-shoppers)
 
 ### Data Acquistion
-- [X] Download Kaggle Walmart Sales Forecasting datasets: walmart_sales.csv & stores.csv
-- [x] read both .csv files into a pandas dataframe and merge 
+- [x] Download Kaggle Walmart Sales Forecasting datasets: walmart_sales.csv & stores.csv
+- [x] Read both .csv files into a pandas dataframe and merge 
 - [x] Automate this process in a single function and save to new_wrangle.py
 - [x] The final function will return a merged pandas DataFrame.
 - [] Import the acquire function from the new_wrangle.py module and use it to acquire the data in the Final Report Notebook.
@@ -99,14 +100,14 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] After initial exploration, perform an initial prep that includes:
     * addressing null or missing values
     * rename and lower case column labels
-    * address dtypes and perform necessary conversions
+    * address data types and perform necessary conversions
     * round floats to two decimals
-- [x] address outliers and save function in new_wrangle.py
-- [x] create new season feature and save function in new_wrangle.py
-- [x] create new features and save function in new_wrangle.py
-- [x] create dummy variables for holiday_name and save function in new_wrangle.py
-- [x] create column detailing holilday name and save function in new_wrangle.py
-- [x] create a single master function that combines and applies the previous functions to our raw dataframe and save function in new_wrangle.py
+- [x] Address outliers and save function in new_wrangle.py
+- [x] Create new season feature and save function in new_wrangle.py
+- [x] Create new features and save function in new_wrangle.py
+- [x] Create dummy variables for holiday_name and save function in new_wrangle.py
+- [x] Create column detailing holilday name and save function in new_wrangle.py
+- [x] Create a single master function that combines and applies the previous functions to our raw dataframe and save function in new_wrangle.py
 - [x] Scale numeric data, concat with object dataframe and save function in new_wrangle.py 
 - [x] Split data into train, test, X_train, y_train, X_test and y_test sets and save function in new_wrangle.py
 - [x] Combine the scale and split function into one split_scale() function
@@ -117,10 +118,10 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [] Summarize our conclusions, provide clear answers to our specific questions, and summarize any takeaways/action plan from the work above.
 - [] Document further data preparation steps to be looked into after MVP / first iteration through the DS pipeline
 
-## ML Models
+### ML Models
 - [x] Construct and evaluate:
     * Ordinary Least Squares (OLS), LASSO LARS & Polynomial Regression models
-- [x] Establish two baselines 
+- [x] Establish two baselines: 
     * the first, by averaging our weekly_sales data in our train dataset and using this mean as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
     * the second, using the prior year's weekly_sales data as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
 - [x] Train (fit, transform, evaluate) the models, varying the algorithm and/or hyperparameters we use.
