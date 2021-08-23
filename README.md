@@ -22,7 +22,7 @@ The goal of this project was to build a sales forecasting model that could poten
 
 ## Data Dictionary:
 
-### -  Initial Data
+### Initial Data
 
 | Feature          | Datatype | Description                                                                                                      |
 |------------------|----------|------------------------------------------------------------------------------------------------------------------|
@@ -37,7 +37,7 @@ The goal of this project was to build a sales forecasting model that could poten
 | `Type`           | float64  | Three  types of stores  by size : A (large ) , B (medium), C (small)                                             |
 | `Size`           | int64    | Size by square feet                                                                                              |
 
-### - Final
+### Final
 
 | Feature                   | Datatype       | Description                                                                                                      |
 |---------------------------|----------------|------------------------------------------------------------------------------------------------------------------|
@@ -92,7 +92,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Train multiple different regression models on train dataset.
 - [x] Evaluate models on test dataset.
 - [] Document conclusions, takeaways, and next steps in the Final Report Notebook.
-- [x] All steps are described in: [Trello](https://trello.com/b/g2atWZrU/attention-walmart-shoppers)
+- [x] All steps are detailed in: [Trello](https://trello.com/b/g2atWZrU/attention-walmart-shoppers)
 
 ### Data Acquistion
 - [x] Download Kaggle Walmart Sales Forecasting datasets: walmart_sales.csv & stores.csv
@@ -120,9 +120,9 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Document Key Findings & Takeaways, as well as possible routes to take after MVP / First Iteration
 
 ### Exploratory Analysis
-- []  
-- [] Summarize our conclusions, provide clear answers to our specific questions, and summarize any takeaways/action plan from the work above.
-- [] Document further data preparation steps to be looked into after MVP / first iteration through the DS pipeline
+- [x] Complete univariate, bivariate and multivariate exploration of features 
+- [x] Summarize our conclusions, provide clear answers to our specific questions, and summarize any takeaways/action plan from the work above.
+- [x] Document further data preparation steps to be looked into after MVP / first iteration through the DS pipeline
 
 ### ML Models
 - [x] Construct and evaluate:
@@ -132,7 +132,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
     * the second, using the prior year's weekly_sales data as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
 - [x] Train (fit, transform, evaluate) the models, varying the algorithm and/or hyperparameters we use.
 - [x] Compare RMSE metrics across all models and evaluate against our baseline RMSE.
-- [] Feature Selection (after initial iteration through pipeline): Are there any variables that seem to provide limited to no additional information?  Are there any alternative feature selection processes that could improve results
+- [x] Feature Selection (after initial iteration through pipeline): Are there any variables that seem to provide limited to no additional information?  Are there any alternative feature selection processes that could improve results
 
 ---
 
