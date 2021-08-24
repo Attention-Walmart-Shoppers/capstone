@@ -16,7 +16,6 @@ The goal of this project was to build a sales forecasting model that could poten
 - [] The impact
 - [] Conclusion
 
-
 ---
 
 ## Data Dictionary:
