@@ -136,6 +136,17 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 
 ---
 
+## Tools Used:
+- jupyter notebook
+- python
+- pandas
+- matplotlib
+- seaborn
+- tableau
+- canva
+
+---
+
 ## Conclusions & Next Steps
 
 - Our polynomial regression second degree model outperformed our baseline by 29% with an RMSE of $64607.17.
