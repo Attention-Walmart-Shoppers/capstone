@@ -99,7 +99,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Read both .csv files into a pandas dataframe and merge 
 - [x] Automate this process in a single function and save to new_wrangle.py
 - [x] The final function will return a merged pandas DataFrame.
-- [] Import the acquire function from the new_wrangle.py module and use it to acquire the data in the Final Report Notebook.
+- [x] Import the acquire function from the new_wrangle.py module and use it to acquire the data in the Final Report Notebook.
 - [x] Complete some initial data summarization (`.info()`, `.describe()`, `.value_counts()`, `.nunique()`, ...).
 
 ### Data Preparation
@@ -138,4 +138,8 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 
 ## Conclusions & Next Steps
 
-- 
+- Our polynomial regression second degree model outperformed our baseline by 29% with an RMSE of $64607.17.
+<br>
+- Our recommendation is that our model be deployed in a blended strategy:  
+    - utilizing last-year’s sales data as a base predictor for decisions that need to be made beyond a week’s horizon 
+    - employing our model to refine and adjust those inventory decisions one week in advance
