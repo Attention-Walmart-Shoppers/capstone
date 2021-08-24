@@ -8,21 +8,19 @@ The goal of this project was to build a sales forecasting model that could poten
 
 ## Project Deliverables:
 > Deliver 10 minute presentation walkthrough and slide presentation communicating to our stakeholders:
-- [] the project need and how we attempted to solve it
-- [] the assumptions and hypotheses we had going into the project
-    * how these panned out and evolved throughout the process
-- [] how we defined our target variable
-- [] how we handled the data and why we made the decisions during preparation we did
-- [] our exploratory findings
-- [] our modeling results
-- [] what methodologies, tools and skills we deployed during the project pipeline
-- [] Conclusion, Recommendations & Next Steps
+- [x] Executive Summary
+- [x] Data introduction and main issues
+    * Trasnforming time series data.
+- [x] Drivers of Sales and Exploration
+- [x] Creation of regression models
+- [x] The impact
+- [x] Conclusion
 
 ---
 
 ## Data Dictionary:
 
-### Initial Data
+### Initial Dataframe
 
 | Feature          | Datatype | Description                                                                                                      |
 |------------------|----------|------------------------------------------------------------------------------------------------------------------|
@@ -37,7 +35,7 @@ The goal of this project was to build a sales forecasting model that could poten
 | `Type`           | float64  | Three  types of stores  by size : A (large ) , B (medium), C (small)                                             |
 | `Size`           | int64    | Size by square feet                                                                                              |
 
-### Final
+### Final Dataframe
 
 | Feature                   | Datatype       | Description                                                                                                      |
 |---------------------------|----------------|------------------------------------------------------------------------------------------------------------------|
@@ -91,7 +89,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Establish a baseline accuracy and document.
 - [x] Train multiple different regression models on train dataset.
 - [x] Evaluate models on test dataset.
-- [] Document conclusions, takeaways, and next steps in the Final Report Notebook.
+- [x] Document conclusions, takeaways, and next steps in the Final Report Notebook.
 - [x] All steps are detailed in: [Trello](https://trello.com/b/g2atWZrU/attention-walmart-shoppers)
 
 ### Data Acquistion
@@ -99,7 +97,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Read both .csv files into a pandas dataframe and merge 
 - [x] Automate this process in a single function and save to new_wrangle.py
 - [x] The final function will return a merged pandas DataFrame.
-- [] Import the acquire function from the new_wrangle.py module and use it to acquire the data in the Final Report Notebook.
+- [x] Import the acquire function from the new_wrangle.py module and use it to acquire the data in the Final Report Notebook.
 - [x] Complete some initial data summarization (`.info()`, `.describe()`, `.value_counts()`, `.nunique()`, ...).
 
 ### Data Preparation
@@ -126,7 +124,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 
 ### ML Models
 - [x] Construct and evaluate:
-    * Ordinary Least Squares (OLS), LASSO LARS & Polynomial Regression models
+    * Ordinary Least Squares (OLS), LASSO LARS, Tweedie Regressor (GLM) & Polynomial Regression models
 - [x] Establish two baselines: 
     * the first, by averaging our weekly_sales data in our train dataset and using this mean as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
     * the second, using the prior year's weekly_sales data as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
@@ -136,6 +134,21 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 
 ---
 
+## Tools Used:
+- Jupyter Notebook
+- Python
+- Pandas
+- Matplotlib
+- Seaborn
+- Tableau
+- Canva
+
+---
+
 ## Conclusions & Next Steps
 
-- 
+- Our polynomial regression second degree model outperformed our baseline by 29% with an RMSE of $64,607.17.
+<br>
+- Our recommendation is that our model be deployed in a blended strategy:  
+    - utilizing last-year’s sales data as a base predictor for decisions that need to be made beyond a week’s horizon 
+    - employing our model to refine and adjust those inventory decisions one week in advance
