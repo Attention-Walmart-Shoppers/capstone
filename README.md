@@ -8,13 +8,13 @@ The goal of this project was to build a sales forecasting model that could poten
 
 ## Project Deliverables:
 > Deliver 10 minute presentation walkthrough and slide presentation communicating to our stakeholders:
-- [] Executive Summary
-- [] Data introduction and main issues
+- [x] Executive Summary
+- [x] Data introduction and main issues
     * Trasnforming time series data.
-- [] Drivers of Sales and Exploration
-- [] Creation of regression models
-- [] The impact
-- [] Conclusion
+- [x] Drivers of Sales and Exploration
+- [x] Creation of regression models
+- [x] The impact
+- [x] Conclusion
 
 ---
 
@@ -147,7 +147,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 
 ## Conclusions & Next Steps
 
-- Our polynomial regression second degree model outperformed our baseline by 29% with an RMSE of $64607.17.
+- Our polynomial regression second degree model outperformed our baseline by 29% with an RMSE of $64,607.17.
 <br>
 - Our recommendation is that our model be deployed in a blended strategy:  
     - utilizing last-year’s sales data as a base predictor for decisions that need to be made beyond a week’s horizon 
