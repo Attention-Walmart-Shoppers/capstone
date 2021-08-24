@@ -8,15 +8,14 @@ The goal of this project was to build a sales forecasting model that could poten
 
 ## Project Deliverables:
 > Deliver 10 minute presentation walkthrough and slide presentation communicating to our stakeholders:
-- [] the project need and how we attempted to solve it
-- [] the assumptions and hypotheses we had going into the project
-    * how these panned out and evolved throughout the process
-- [] how we defined our target variable
-- [] how we handled the data and why we made the decisions during preparation we did
-- [] our exploratory findings
-- [] our modeling results
-- [] what methodologies, tools and skills we deployed during the project pipeline
-- [] Conclusion, Recommendations & Next Steps
+- [] Executive Summary
+- [] Data introduction and main issues
+    * Trasnforming time series data.
+- [] Drivers of Sales and Exploration
+- [] Creation of regression models
+- [] The impact
+- [] Conclusion
+
 
 ---
 
@@ -126,7 +125,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 
 ### ML Models
 - [x] Construct and evaluate:
-    * Ordinary Least Squares (OLS), LASSO LARS & Polynomial Regression models
+    * Ordinary Least Squares (OLS), LASSO LARS, Tweedie Regressor (GLM) & Polynomial Regression models
 - [x] Establish two baselines: 
     * the first, by averaging our weekly_sales data in our train dataset and using this mean as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
     * the second, using the prior year's weekly_sales data as our forecasted values to evaluate against our actual weekly_sales data in our test dataset to calculate a RMSE baseline
