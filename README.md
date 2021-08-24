@@ -21,7 +21,7 @@ The goal of this project was to build a sales forecasting model that could poten
 
 ## Data Dictionary:
 
-### Initial Data
+### Initial Dataframe
 
 | Feature          | Datatype | Description                                                                                                      |
 |------------------|----------|------------------------------------------------------------------------------------------------------------------|
@@ -36,7 +36,7 @@ The goal of this project was to build a sales forecasting model that could poten
 | `Type`           | float64  | Three  types of stores  by size : A (large ) , B (medium), C (small)                                             |
 | `Size`           | int64    | Size by square feet                                                                                              |
 
-### Final
+### Final Dataframe
 
 | Feature                   | Datatype       | Description                                                                                                      |
 |---------------------------|----------------|------------------------------------------------------------------------------------------------------------------|
@@ -90,7 +90,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Establish a baseline accuracy and document.
 - [x] Train multiple different regression models on train dataset.
 - [x] Evaluate models on test dataset.
-- [] Document conclusions, takeaways, and next steps in the Final Report Notebook.
+- [x] Document conclusions, takeaways, and next steps in the Final Report Notebook.
 - [x] All steps are detailed in: [Trello](https://trello.com/b/g2atWZrU/attention-walmart-shoppers)
 
 ### Data Acquistion
@@ -132,6 +132,17 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - [x] Train (fit, transform, evaluate) the models, varying the algorithm and/or hyperparameters we use.
 - [x] Compare RMSE metrics across all models and evaluate against our baseline RMSE.
 - [x] Feature Selection (after initial iteration through pipeline): Are there any variables that seem to provide limited to no additional information?  Are there any alternative feature selection processes that could improve results
+
+---
+
+## Tools Used:
+- Jupyter Notebook
+- Python
+- Pandas
+- Matplotlib
+- Seaborn
+- Tableau
+- Canva
 
 ---
 
