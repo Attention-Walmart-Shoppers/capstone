@@ -8,10 +8,10 @@ The goal of this project was to build a sales forecasting model that could poten
 
 ## Project Deliverables:
 > Deliver 10 minute presentation walkthrough and slide presentation communicating to our stakeholders:
-- [x] Executive Summary
+- [x] Executive summary
 - [x] Data introduction and main issues
-    * Trasnforming time series data.
-- [x] Drivers of Sales and Exploration
+    * Transforming time series data
+- [x] Drivers of sales and exploration
 - [x] Creation of regression models
 - [x] The impact
 - [x] Conclusion
