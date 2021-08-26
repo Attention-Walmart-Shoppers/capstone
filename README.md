@@ -155,6 +155,6 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - Our polynomial regression second degree model outperformed our baseline by 29% with an RMSE of $64,607.17.  
     * Baseline R-squared = 0.975 vs model R-squared = 0.987
 <br>
-- Our recommendation is that our model be deployed in a blended strategy:  
-    - Base forecasts utilizing last-year’s sales data as a base predictor for decisions that need to be made beyond a week’s horizon 
-    - Employing our model to refine and adjust those inventory decisions one week in advance
+- Our recommendation is that our model be deployed in a blended strategy: 
+    * Base forecasts utilizing last-year’s sales data as a base predictor for decisions that need to be made beyond a week’s horizon 
+    * Employing our model to refine and adjust those inventory decisions one week in advance
