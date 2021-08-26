@@ -142,7 +142,7 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - Jupyter Notebook
 - Python
 - Pandas
-- SciPy’s
+- Scikit-learn
 - Matplotlib
 - Seaborn
 - Tableau
