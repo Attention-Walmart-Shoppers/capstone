@@ -2,7 +2,7 @@
 
 # Project Summary
 
-The goal of this project was to build a sales forecasting model that could potentially be used by a stakeholder to help manage inventory needs by forecasting consumer demand one week in advance. We used the data provided by the Kaggle Walmart Recruiting - "Store Sales Forecasting" challenge which contained weekly sales, holiday flags, temperature, fuel prices, CPI and unemployment by store id and weekly time periods. After exploring the provided data and identifying potential sales drivers, we utilized the time series data to engineer features we felt would provide a regression model some predictive value. The biggest challenge in identifying temporal trends that we could leverage in our modeling came when trying to organize our data in a manner from which our model could gain information from.  Through various feature manipulations and engineering, we were able to construct several regression models that outperformed our benchmark. Our benchmark was established by using the prior year's weekly sales data as our forecasts and calculating an RMSE score of $91,145.28.  We utilized OLS, LASSOLARS, Tweedie Regressor (GLM) & Polynomial Regression models. All outperformed the benchmark but our Polynomial Regression model which utilized Recursive Feature Elimination was the best performer with an RMSE score of $64,607.17. 
+The goal of this project was to build a sales forecasting model that could potentially be used by a stakeholder to help manage inventory needs by forecasting consumer demand one week in advance. We used the data provided by the Kaggle Walmart Recruiting - "Store Sales Forecasting" challenge which contained weekly sales, holiday flags, temperature, fuel prices, CPI and unemployment by store id and weekly time periods. After exploring the provided data and identifying potential sales drivers, we utilized the time series data to engineer features we felt would provide a regression model some predictive value. The biggest challenge in identifying temporal trends that we could leverage in our modeling came when trying to organize our data in a manner from which our model could gain information.  Through various feature manipulations and engineering, we were able to construct several regression models that outperformed our benchmark. Our benchmark was established by using the prior year's weekly sales data as our forecasts and calculating an RMSE score of $91,145.28.  We utilized OLS, LASSOLARS, Tweedie Regressor (GLM) & Polynomial Regression models. All outperformed the benchmark but our Polynomial Regression model which utilized Recursive Feature Elimination was the best performer with an RMSE score of $64,607.17. 
 
 ---
 
@@ -159,4 +159,8 @@ Plan -> Data Acquisition -> Data Prep -> Exploratory Analysis -> ML Models -> De
 - Our recommendation is that our model be deployed in a blended strategy: 
     * Base forecasts utilizing last-year’s sales data as a base predictor for decisions that need to be made beyond a week’s horizon 
     * Employing our model to refine and adjust those inventory decisions one week in advance
+
+- Next Steps: 
+    * Cluster stores by location using regional features and explore/model sales trends
+    * Increase granularity of sales to include department sales by stores and explore/model sales trends by department
 <br>
