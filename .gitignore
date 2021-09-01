@@ -1,3 +1,5 @@
 *.png
 wrangle_new.py
 justincase.py
+pol_features.csv
+pred_df.csv
